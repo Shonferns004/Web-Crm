@@ -1,0 +1,115 @@
+import { createHash, randomUUID } from 'node:crypto';
+import { prisma } from '../../libs/prisma';
+
+export function hashToken(token: string): string {
+  return createHash('sha256').update(token).digest('hex');
+}
+
+export interface CreateRefreshTokenInput {
+  userId: string;
+  token: string;
+  familyId?: string;
+  expiresAt: Date;
+  ipAddress?: string;
+  userAgent?: string;
+}
+
+export const authRepository = {
+  async findUserByEmail(email: string) {
+    return prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        passwordHash: true,
+        isMaster: true,
+        isActive: true,
+      },
+    });
+  },
+
+  async findUserById(id: string) {
+    return prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        passwordHash: true,
+        isMaster: true,
+        isActive: true,
+      },
+    });
+  },
+
+  async findActiveRefreshFamilies(userId: string) {
+    return prisma.refreshToken.findMany({
+      where: { userId, revokedAt: null },
+      select: { familyId: true },
+      distinct: ['familyId'],
+    });
+  },
+
+  async findMemberships(userId: string) {
+    return prisma.organizationUser.findMany({
+      where: { userId, isActive: true },
+      select: {
+        isCurrent: true,
+        organization: {
+          select: { id: true, slug: true, name: true, logoUrl: true },
+        },
+        role: { select: { key: true, name: true } },
+      },
+    });
+  },
+
+  async createRefreshToken(input: CreateRefreshTokenInput) {
+    return prisma.refreshToken.create({
+      data: {
+        userId: input.userId,
+        tokenHash: hashToken(input.token),
+        familyId: input.familyId ?? randomUUID(),
+        expiresAt: input.expiresAt,
+        ipAddress: input.ipAddress,
+        userAgent: input.userAgent,
+      },
+    });
+  },
+
+  async findRefreshToken(token: string) {
+    return prisma.refreshToken.findUnique({
+      where: { tokenHash: hashToken(token) },
+    });
+  },
+
+  async revokeRefreshToken(id: string, replacedById?: string) {
+    return prisma.refreshToken.update({
+      where: { id },
+      data: { revokedAt: new Date(), replacedById: replacedById ?? null },
+    });
+  },
+
+  async revokeFamily(familyId: string, exceptId?: string) {
+    return prisma.refreshToken.updateMany({
+      where: { familyId, revokedAt: null, NOT: exceptId ? { id: exceptId } : undefined },
+      data: { revokedAt: new Date() },
+    });
+  },
+
+  async updateLastLogin(userId: string) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { lastLoginAt: new Date() },
+    });
+  },
+
+  async changePassword(userId: string, passwordHash: string) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { passwordHash },
+    });
+  },
+};
