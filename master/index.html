@@ -494,9 +494,15 @@
 </div>
 <!-- Admin Page -->
 <div id="page-admin" style="display:none">
-<header class="mb-8">
+<header class="mb-8 flex items-start justify-between gap-4 flex-wrap">
+<div>
 <h3 class="text-display-lg font-display-lg text-on-surface">Admin</h3>
 <p class="text-body-lg font-body-lg text-on-surface-variant">Admin users created on the platform and the websites they manage.</p>
+</div>
+<button onclick="openAddAdminModal()" class="flex items-center gap-2 bg-inverse-surface text-white px-4 py-2 rounded-xl text-label-md font-label-md hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">add</span>
+Add admin
+</button>
 </header>
 <div id="admin-list" class="space-y-6"></div>
 </div>
@@ -507,6 +513,38 @@
 <p class="text-body-lg font-body-lg text-on-surface-variant">Roles available on the platform.</p>
 </header>
 <div id="role-list" class="space-y-6"></div>
+</div>
+<!-- Add Admin Modal -->
+<div id="add-admin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+<div class="bg-white rounded-[24px] p-6 w-full max-w-md card-shadow">
+<div class="flex items-center justify-between mb-4">
+<h4 class="text-headline-sm font-headline-sm text-on-surface">Add admin</h4>
+<button type="button" onclick="closeAddAdminModal()" class="text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">close</span></button>
+</div>
+<form id="add-admin-form" onsubmit="handleAddAdmin(event)">
+<div class="space-y-4">
+<div>
+<label for="new-admin-username" class="block text-body-md font-body-md font-medium text-on-surface mb-1">Username</label>
+<input id="new-admin-username" type="text" required placeholder="e.g. johndoe" class="w-full border border-outline-variant rounded-xl px-4 py-2.5 text-body-md font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40">
+</div>
+<div>
+<label for="new-admin-password" class="block text-body-md font-body-md font-medium text-on-surface mb-1">Password</label>
+<input id="new-admin-password" type="password" required placeholder="Enter a password" class="w-full border border-outline-variant rounded-xl px-4 py-2.5 text-body-md font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40">
+</div>
+<div>
+<label for="new-admin-role" class="block text-body-md font-body-md font-medium text-on-surface mb-1">Role</label>
+<select id="new-admin-role" class="w-full border border-outline-variant rounded-xl px-4 py-2.5 text-body-md font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/40">
+<option value="site">Admin</option>
+<option value="master">Master Admin</option>
+</select>
+</div>
+</div>
+<div class="flex items-center justify-end gap-3 mt-6">
+<button type="button" onclick="closeAddAdminModal()" class="px-4 py-2 rounded-xl text-label-md font-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors">Cancel</button>
+<button type="submit" class="px-4 py-2 rounded-xl text-label-md font-label-md bg-inverse-surface text-white hover:opacity-90 transition-opacity">Create admin</button>
+</div>
+</form>
+</div>
 </div>
 </main>
 <!-- Interactions -->
@@ -548,7 +586,7 @@
                 admins = [];
             }
             if (!Array.isArray(admins) || admins.length === 0) {
-                container.innerHTML = '<p class="text-body-lg font-body-lg text-on-surface-variant">No admins yet. Create admins from the dashboard.</p>';
+                container.innerHTML = '<p class="text-body-lg font-body-lg text-on-surface-variant">No admins yet. Click \'Add admin\' to create one.</p>';
                 return;
             }
             container.innerHTML = admins.map(admin => {
@@ -572,6 +610,47 @@
                         </div>
                     </div>`;
             }).join('');
+        }
+
+        function openAddAdminModal() {
+            document.getElementById('add-admin-modal').classList.remove('hidden');
+        }
+
+        function closeAddAdminModal() {
+            document.getElementById('add-admin-modal').classList.add('hidden');
+        }
+
+        function handleAddAdmin(event) {
+            event.preventDefault();
+            const username = document.getElementById('new-admin-username').value.trim();
+            const password = document.getElementById('new-admin-password').value;
+            const role = document.getElementById('new-admin-role').value;
+            if (!username || !password) { alert('Please fill in all fields'); return; }
+            let admins = [];
+            try {
+                admins = JSON.parse(localStorage.getItem('master-crm.admins.v1') || '[]');
+            } catch (e) {
+                admins = [];
+            }
+            if (!Array.isArray(admins)) admins = [];
+            if (admins.some(a => (a.username || '').toLowerCase() === username.toLowerCase())) {
+                alert('Username is already taken');
+                return;
+            }
+            admins.push({
+                id: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'id-' + Date.now(),
+                username: username,
+                password: password,
+                role: role,
+                status: 'active',
+                createdAt: new Date().toISOString(),
+                createdBy: 'master',
+                lastLoginAt: null
+            });
+            localStorage.setItem('master-crm.admins.v1', JSON.stringify(admins));
+            document.getElementById('add-admin-form').reset();
+            closeAddAdminModal();
+            renderAdmins();
         }
 
         function renderRoles() {
