@@ -12,6 +12,7 @@ import {
   X,
 } from 'lucide-react'
 import { useBranding } from '../hooks/useBranding'
+import { useAuth } from '../context/AuthContext'
 import '../styles/main-layout.css'
 
 interface NavItem {
@@ -26,12 +27,21 @@ const NAV_ITEMS: NavItem[] = [
   { to: '/settings', label: 'Settings', icon: Settings },
 ]
 
+function initials(name: string, email: string): string {
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length >= 2) {
+    return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
+  }
+  return (name.trim()[0] || email[0] || 'A').toUpperCase()
+}
+
 function MainLayout() {
   const [navOpen, setNavOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [profileOpen, setProfileOpen] = useState(false)
   const profileRef = useRef<HTMLDivElement>(null)
   const { branding } = useBranding()
+  const { user, logout } = useAuth()
 
   useEffect(() => {
     function handleClick(event: MouseEvent) {
@@ -46,6 +56,10 @@ function MainLayout() {
     document.addEventListener('click', handleClick)
     return () => document.removeEventListener('click', handleClick)
   }, [])
+
+  const displayName = user
+    ? [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email
+    : ''
 
   return (
     <div className="app-shell">
@@ -141,15 +155,17 @@ function MainLayout() {
               aria-expanded={profileOpen}
               onClick={() => setProfileOpen((open) => !open)}
             >
-              <span className="navbar__avatar-text">AS</span>
+              <span className="navbar__avatar-text">
+                {user ? initials(displayName, user.email) : 'A'}
+              </span>
               <ChevronDown size={15} />
             </button>
 
             {profileOpen && (
               <div className="navbar__dropdown">
                 <div className="navbar__dropdown-head">
-                  <strong>Admin User</strong>
-                  <span>admin@example.com</span>
+                  <strong>{displayName || 'User'}</strong>
+                  <span>{user?.email}</span>
                 </div>
                 <Link
                   to="/settings"
@@ -158,13 +174,16 @@ function MainLayout() {
                 >
                   Profile
                 </Link>
-                <Link
-                  to="/login"
+                <button
+                  type="button"
                   className="navbar__dropdown-item"
-                  onClick={() => setProfileOpen(false)}
+                  onClick={() => {
+                    setProfileOpen(false)
+                    void logout()
+                  }}
                 >
                   Logout
-                </Link>
+                </button>
               </div>
             )}
           </div>

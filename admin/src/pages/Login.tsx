@@ -1,30 +1,53 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Eye, EyeOff, Lock, User as UserIcon } from 'lucide-react'
-import { MOCK_WEBSITES } from '../data/mockData'
+import { Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { isValidEmail } from '../utils/validation'
 import '../styles/auth.css'
 
+interface LocationState {
+  from?: string
+}
+
+function getErrorMessage(error: unknown): string {
+  const status = (error as { response?: { status?: number } })?.response?.status
+  const message = (error as { response?: { data?: { message?: string } } })?.response
+    ?.data?.message
+  if (message) return message
+  if (status === 401) return 'Invalid email or password.'
+  return 'Something went wrong. Please try again.'
+}
+
 function Login() {
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const { login } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setError('')
 
-    const website = MOCK_WEBSITES.find(
-      (candidate) =>
-        candidate.username.toLowerCase() === username.trim().toLowerCase() &&
-        candidate.password === password,
-    )
-
-    if (!website) {
-      setError('Invalid username or password.')
+    if (!isValidEmail(email.trim())) {
+      setError('Please enter a valid email address.')
       return
     }
 
-    window.location.href = website.url
+    setSubmitting(true)
+    try {
+      await login({ email: email.trim(), password })
+      const target = (location.state as LocationState | null)?.from ?? '/'
+      navigate(target, { replace: true })
+    } catch (err) {
+      setError(getErrorMessage(err))
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -32,20 +55,20 @@ function Login() {
       {error && <div className="login__error">{error}</div>}
 
       <div className="login__field">
-        <label className="login__label" htmlFor="username">
-          Username
+        <label className="login__label" htmlFor="email">
+          Email
         </label>
         <div className="login__control">
-          <UserIcon className="login__icon" size={16} />
+          <Mail className="login__icon" size={16} />
           <input
-            id="username"
+            id="email"
             className="input"
-            type="text"
+            type="email"
             autoComplete="username"
-            placeholder="Enter your username"
-            value={username}
+            placeholder="you@example.com"
+            value={email}
             onChange={(event) => {
-              setUsername(event.target.value)
+              setEmail(event.target.value)
               setError('')
             }}
           />
@@ -81,13 +104,23 @@ function Login() {
         </div>
       </div>
 
-      <button type="submit" className="btn btn--primary login__submit">
-        Sign in
+      <button
+        type="submit"
+        className="btn btn--primary login__submit"
+        disabled={submitting}
+      >
+        {submitting ? (
+          <>
+            <Loader2 className="spin" size={16} />
+            Signing in...
+          </>
+        ) : (
+          'Sign in'
+        )}
       </button>
 
       <div className="login__demo">
-        Demo: <strong>{MOCK_WEBSITES[0].username}</strong> /{' '}
-        <strong>{MOCK_WEBSITES[0].password}</strong>
+        Demo: <strong>admin@webcrm.com</strong> / <strong>Admin@123456</strong>
       </div>
     </form>
   )

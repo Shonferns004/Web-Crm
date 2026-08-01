@@ -1,8 +1,7 @@
 /**
  * Base URL for the backend API.
  *
- * The service layer sends requests through the Axios client configured with
- * this value. Point this at a real backend when one is available; until then,
- * requests are intercepted by a mock adapter that serves local data.
+ * Relative (`/api/v1`) so development requests go through the Vite proxy
+ * (see `vite.config.ts`) and production requests resolve on the same origin.
  */
-export const BASE_URL = 'http://localhost:5000/api'
+export const BASE_URL = '/api/v1'

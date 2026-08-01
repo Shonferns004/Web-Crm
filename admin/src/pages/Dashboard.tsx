@@ -4,15 +4,15 @@ import {
   Check,
   CheckCircle2,
   ChevronDown,
-  ExternalLink,
+  FileText,
   Globe,
-  KeyRound,
-  PlusCircle,
+  Layers,
+  Sparkles,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { MOCK_WEBSITES } from '../data/mockData'
-import type { Website } from '../types'
+import { getOverview, getWebsites } from '../services/dashboardService'
+import type { DashboardOverview, Organization } from '../types'
 import '../styles/pages.css'
 
 type StatTone = 'indigo' | 'teal' | 'amber' | 'coral'
@@ -51,6 +51,7 @@ const RANGE_OPTIONS: RangeOption[] = [
   { key: 'last-30-days', label: 'Last 30 Days' },
 ]
 
+// Illustrative sample data: the API does not expose time-series growth yet.
 const RANGE_DATA: Record<RangeKey, ChartDatum[]> = {
   ytd: [
     { label: 'Jan', value: 30 },
@@ -211,7 +212,7 @@ function AreaChart({ data }: { data: ChartDatum[] }) {
         className="area-chart__svg"
         viewBox={`0 0 ${AREA_WIDTH} ${AREA_HEIGHT}`}
         role="img"
-        aria-label="Websites added over time chart"
+        aria-label="Websites added over time chart (sample data)"
       >
         <defs>
           <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
@@ -324,43 +325,79 @@ function DonutChart({ segments }: { segments: DonutSegment[] }) {
   )
 }
 
-function WebsiteCard({ website }: { website: Website }) {
+function WebsiteCard({ website }: { website: Organization }) {
   return (
-    <a
-      href={website.url}
-      target="_blank"
-      rel="noreferrer"
-      className="card website-card"
-    >
+    <Link to={`/websites/${website.id}`} className="card website-card">
       <div className="website-card__top">
         <span className="website-card__icon">
           <Globe size={18} />
         </span>
         <span
-          className={`status-badge ${website.status === 'active' ? 'status-badge--active' : 'status-badge--inactive'}`}
+          className={`status-badge ${
+            website.status === 'ACTIVE'
+              ? 'status-badge--active'
+              : 'status-badge--inactive'
+          }`}
         >
-          {website.status}
+          {website.status.toLowerCase()}
         </span>
       </div>
       <p className="website-card__name">{website.name}</p>
-      <span className="website-card__url">
-        {website.url}
-        <ExternalLink size={13} />
-      </span>
-    </a>
+      <span className="website-card__url">{website.website ?? website.slug}</span>
+    </Link>
+  )
+}
+
+function WebsiteCardSkeleton() {
+  return (
+    <div className="card website-card">
+      <div className="website-card__top">
+        <div className="skeleton skeleton--circle" />
+        <div className="skeleton skeleton--bar" style={{ width: '30%' }} />
+      </div>
+      <div className="skeleton skeleton--bar" style={{ width: '70%' }} />
+      <div className="skeleton skeleton--bar" style={{ width: '50%' }} />
+    </div>
   )
 }
 
 function Dashboard() {
   const [range, setRange] = useState<RangeKey>('ytd')
+  const [overview, setOverview] = useState<DashboardOverview | null>(null)
+  const [websites, setWebsites] = useState<Organization[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  const activeWebsites = MOCK_WEBSITES.filter(
-    (website) => website.status === 'active',
+  useEffect(() => {
+    let cancelled = false
+
+    Promise.all([getOverview(), getWebsites()])
+      .then(([overviewData, websiteData]) => {
+        if (!cancelled) {
+          setOverview(overviewData)
+          setWebsites(websiteData)
+        }
+      })
+      .catch(() => {
+        // The axios interceptor handles session expiry; other failures leave
+        // the dashboard in its empty state.
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setIsLoading(false)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const totalWebsites = overview?.organizations ?? websites.length
+  const activeWebsites = websites.filter(
+    (website) => website.status === 'ACTIVE',
   ).length
-  const inactiveWebsites = MOCK_WEBSITES.length - activeWebsites
-  const activePercent = Math.round(
-    (activeWebsites / MOCK_WEBSITES.length) * 100,
-  )
+  const inactiveWebsites = Math.max(totalWebsites - activeWebsites, 0)
+  const activePercent = totalWebsites > 0 ? Math.round((activeWebsites / totalWebsites) * 100) : 0
 
   const STATUS_SEGMENTS: DonutSegment[] = [
     { label: 'Active', value: activeWebsites, color: '#14b8a6' },
@@ -371,36 +408,38 @@ function Dashboard() {
     {
       id: 'total-websites',
       label: 'Total Websites',
-      value: String(MOCK_WEBSITES.length),
-      badge: '+1 qtr',
+      value: isLoading ? '—' : String(totalWebsites),
+      badge: `${activePercent}% active`,
       tone: 'indigo',
       icon: Globe,
     },
     {
       id: 'active-websites',
       label: 'Active Websites',
-      value: String(activeWebsites),
-      badge: `${activePercent}% active`,
+      value: isLoading ? '—' : String(activeWebsites),
+      badge: `${activePercent}% of total`,
       tone: 'teal',
       icon: CheckCircle2,
     },
     {
-      id: 'recently-added',
-      label: 'Recently Added',
-      value: '2',
-      badge: 'This mo.',
+      id: 'pages',
+      label: 'Pages',
+      value: isLoading ? '—' : String(overview?.pages ?? 0),
+      badge: 'Across sites',
       tone: 'amber',
-      icon: PlusCircle,
+      icon: FileText,
     },
     {
-      id: 'credentials-stored',
-      label: 'Credentials Stored',
-      value: '6',
-      badge: 'Secure',
+      id: 'projects',
+      label: 'Projects',
+      value: isLoading ? '—' : String(overview?.projects ?? 0),
+      badge: 'Across sites',
       tone: 'coral',
-      icon: KeyRound,
+      icon: Layers,
     },
   ]
+
+  const mostRecent = websites.length > 0 ? websites[0] : null
 
   return (
     <div className="page">
@@ -408,8 +447,7 @@ function Dashboard() {
         <div>
           <h1 className="page__title">Overview Dashboard</h1>
           <p className="page__subtitle">
-            Welcome back, Alex. Your managed websites are performing within
-            expected parameters.
+            Live status of your managed websites across the platform.
           </p>
         </div>
       </header>
@@ -437,7 +475,7 @@ function Dashboard() {
           <div>
             <h2 className="section-heading__title">Managed Websites</h2>
             <p className="section-heading__hint">
-              Live status of your enterprise property portfolio.
+              Websites you can manage in this workspace.
             </p>
           </div>
           <Link to="/websites" className="btn btn--primary">
@@ -446,9 +484,25 @@ function Dashboard() {
           </Link>
         </div>
         <div className="website-grid">
-          {MOCK_WEBSITES.map((website) => (
-            <WebsiteCard website={website} key={website.id} />
-          ))}
+          {isLoading ? (
+            <>
+              <WebsiteCardSkeleton />
+              <WebsiteCardSkeleton />
+              <WebsiteCardSkeleton />
+            </>
+          ) : websites.length === 0 ? (
+            <div className="card empty-state">
+              <Globe size={28} />
+              <p className="empty-state__title">No websites yet</p>
+              <p className="empty-state__hint">
+                Create your first website from the Websites page.
+              </p>
+            </div>
+          ) : (
+            websites.map((website) => (
+              <WebsiteCard website={website} key={website.id} />
+            ))
+          )}
         </div>
       </section>
 
@@ -462,7 +516,8 @@ function Dashboard() {
                 {
                   RANGE_OPTIONS.find((option) => option.key === range)
                     ?.label ?? 'Year to Date'
-                }
+                }{' '}
+                <em>(sample data)</em>
               </p>
             </div>
             <RangeDropdown value={range} onChange={setRange} />
@@ -483,24 +538,36 @@ function Dashboard() {
 
       <section className="card summary-strip" aria-label="Key insights">
         <div className="summary-strip__item">
-          <span className="summary-strip__label">Avg. Uptime</span>
-          <strong className="summary-strip__value">99.8%</strong>
+          <span className="summary-strip__label">Total Websites</span>
+          <strong className="summary-strip__value">
+            {isLoading ? '—' : totalWebsites}
+          </strong>
         </div>
         <div className="summary-strip__item">
-          <span className="summary-strip__label">Fastest Growing</span>
-          <strong className="summary-strip__value">Being Sevak</strong>
+          <span className="summary-strip__label">Active Websites</span>
+          <strong className="summary-strip__value">
+            {isLoading ? '—' : activeWebsites}
+          </strong>
         </div>
         <div className="summary-strip__item">
           <span className="summary-strip__label">Most Recent Addition</span>
-          <strong className="summary-strip__value">Mann Care Foundation</strong>
+          <strong className="summary-strip__value">
+            {isLoading ? '—' : mostRecent?.name ?? '—'}
+          </strong>
         </div>
         <div className="summary-strip__item">
-          <span className="summary-strip__label">Total Websites</span>
+          <span className="summary-strip__label">Total Donations</span>
           <strong className="summary-strip__value">
-            {MOCK_WEBSITES.length}
+            {isLoading ? '—' : overview?.donations ?? 0}
           </strong>
         </div>
       </section>
+
+      {isLoading && (
+        <p className="dashboard-loading-hint" role="status">
+          <Sparkles size={14} /> Loading live data...
+        </p>
+      )}
     </div>
   )
 }

@@ -424,6 +424,12 @@ select {
   border-radius: var(--radius-sm);
 }
 
+.skeleton--circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+}
+
 .skeleton::after {
   content: '';
   position: absolute;

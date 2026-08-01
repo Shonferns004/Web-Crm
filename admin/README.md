@@ -1,13 +1,15 @@
-# Admin Panel — Multi-Website Management
+# Admin Panel — Platform Administration
 
-A React admin panel for managing a portfolio of websites and their login credentials. It tracks each site's URL, status, and credentials, and ships with a login flow where a user signs in with their per-website credentials and is redirected to the site they're assigned to. The interface is fully responsive and includes a dashboard with stats and charts, full CRUD management for websites, and customizable branding.
+A React admin panel for platform administrators. It connects to the WebCRM
+backend (`server/`) and lets admins log in with real credentials, view
+dashboard metrics, create/manage websites (organizations), manage website
+users per site, and edit their own profile and password.
 
 ## Tech Stack
 
 | Library | Version | Purpose |
 | --- | --- | --- |
 | React | `^19.2.8` | UI framework |
-| React DOM | `^19.2.8` | DOM rendering for React |
 | TypeScript | `~6.0.2` | Typed language / build tooling |
 | Vite | `^8.2.0` | Dev server and production bundler |
 | React Router | `^7.18.2` | Client-side routing |
@@ -16,17 +18,30 @@ A React admin panel for managing a portfolio of websites and their login credent
 | @vitejs/plugin-react | `^6.0.4` | Vite React plugin |
 | Oxlint | `^1.75.0` | Linter |
 
-> Note: Charts on the Dashboard are hand-built SVG components (see
-> `pages/Dashboard.tsx`) — no charting library is required.
+> Charts on the Dashboard are hand-built SVG components (see
+> `pages/Dashboard.tsx`) — no charting library is required. The growth chart
+> is illustrative sample data (the API does not expose time-series yet).
 
 ## Features
 
-- **Dashboard** — stat cards, a growth-trend area chart with a time-range dropdown (Year to Date / Last 6 Months / Last 3 Months / Last 30 Days), a status donut chart, a "Managed Websites" grid, and a summary strip.
-- **Websites management** — full CRUD (add / edit / delete) behind a modal, form validation, loading skeletons, and an empty state. On mobile the table collapses into a stacked card layout.
-- **Per-website credentials** — each website stores a username and password; passwords are masked with a per-row show/hide toggle.
-- **Login-based redirect** — a user signs in with their assigned website's credentials and is redirected to that website's URL (`window.location.href`).
-- **Responsive design** — layouts adapt across desktop, tablet, and mobile viewports with mobile navigation and touch-friendly targets.
-- **Customizable branding** — the app name, logo letter, and an uploaded logo are editable from Settings and persisted to `localStorage`.
+- **Authentication** — real email/password login against `POST /auth/login`.
+  Tokens are stored in `localStorage`; a silent refresh (`POST /auth/refresh`)
+  keeps sessions alive and the user is redirected to `/login` when refresh
+  fails. Protected routes are gated by `RequireAuth`.
+- **Dashboard** — stat cards, website grid, and summary strip driven by
+  `GET /dashboard/overview` and `GET /dashboard/websites`, plus status donut
+  and sample growth charts.
+- **Websites management** — create/edit websites (`POST/PATCH /organizations`),
+  list via `GET /organizations`, and delete (master only, the API forbids
+  platform admins from deleting organizations).
+- **One-time credentials** — creating a website returns the auto-generated
+  website-user credential (`webUser.email` + password) exactly once; the panel
+  shows it in a copy-friendly dialog.
+- **Website detail** — per-site stats (`GET /dashboard/websites/:id`), website
+  users (`GET/POST/DELETE /organizations/:id/users`), and assigned platform
+  admins (`GET /organizations/:id/admins`, master only).
+- **Settings** — edit your profile (`PATCH /users/:id`), change your password
+  (`POST /auth/change-password`), and customize panel branding (local).
 
 ## Folder Structure
 
@@ -34,57 +49,36 @@ A React admin panel for managing a portfolio of websites and their login credent
 admin/
 ├── public/                     # Static public assets served as-is
 ├── src/
-│   ├── assets/                 # Static images (svg placeholders, etc.)
-│   ├── components/             # Reusable UI components (e.g. Modal)
-│   ├── config/                 # App configuration: constants.ts (APP_NAME),
-│   │                           #   api.ts (BASE_URL), branding.ts (branding store)
-│   ├── data/                   # Mock data used until a real backend exists
-│   ├── hooks/                  # Custom React hooks (e.g. useBranding)
-│   ├── layouts/                # Layout wrappers: MainLayout, AuthLayout
-│   ├── lib/                    # Third-party integrations (Axios client)
-│   ├── pages/                  # Route-level pages: Dashboard, Websites,
-│   │                           #   Settings, Login
+│   ├── components/             # Reusable UI components (Modal, RequireAuth)
+│   ├── config/                 # api.ts (BASE_URL), constants, branding store
+│   ├── context/                # AuthContext (session state)
+│   ├── hooks/                  # Custom React hooks (useBranding)
+│   ├── layouts/                # MainLayout, AuthLayout
+│   ├── lib/                    # Axios client + interceptors, token storage
+│   ├── pages/                  # Login, Dashboard, Websites, WebsiteDetail, Settings
 │   ├── routes/                 # React Router route definitions
-│   ├── services/               # Data-access layer (website CRUD)
-│   ├── styles/                 # CSS for layouts/pages/components (auth.css,
-│   │                           #   main-layout.css, pages.css, components.css)
-│   ├── types/                  # Shared TypeScript types and interfaces
-│   ├── utils/                  # Small helper utilities (formatDate, validation)
-│   ├── App.tsx                 # Root component mounting the router
+│   ├── services/               # Data-access layer (auth, organization, dashboard, user)
+│   ├── styles/                 # CSS for layouts/pages/components
+│   ├── types/                  # Shared TypeScript types (server payload shapes)
+│   ├── utils/                  # Small helper utilities
+│   ├── App.tsx                 # Root component (AuthProvider + router)
 │   ├── index.css               # Global styles: CSS variables, base + shared styles
 │   └── main.tsx                # App entry point
 ```
-
-There is currently no `context/` folder — authentication state is local to
-`pages/Login.tsx` (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for details).
 
 ## Getting Started
 
 ### Prerequisites
 
 - **Node.js `^20.19.0` or `>=22.12.0`** (required by Vite 8)
-- npm (comes with Node)
+- The backend (`server/`) running on `http://localhost:4000`
 
 ### Installation
 
 ```bash
-git clone <your-repository-url>
 cd admin
 npm install
 ```
-
-### Environment Setup
-
-The app is configured to talk to a backend at `src/config/api.ts`:
-
-```ts
-export const BASE_URL = 'http://localhost:5000/api'
-```
-
-The service layer sends requests through an Axios client built on `BASE_URL`.
-Until a real backend exists, requests are intercepted by a mock adapter (see
-`src/services/websiteService.ts`) that serves local data, so the app runs fully
-standalone. To point at a real backend, just change `BASE_URL`.
 
 ### Running Locally
 
@@ -92,7 +86,11 @@ standalone. To point at a real backend, just change `BASE_URL`.
 npm run dev
 ```
 
-Vite starts a dev server (default `http://localhost:5173`) with HMR.
+Vite starts a dev server (default `http://localhost:5173`) and proxies `/api`
+requests to the backend at `http://localhost:4000` (see `vite.config.ts`), so
+no CORS configuration is needed in development.
+
+Seed credentials: `admin@webcrm.com` / `Admin@123456`
 
 ### Building for Production
 
@@ -110,49 +108,20 @@ npm run lint
 
 Runs `oxlint` against the codebase.
 
-## Available Scripts
-
-| Script | Description |
-| --- | --- |
-| `npm run dev` | Start the Vite dev server with hot module replacement |
-| `npm run build` | Type-check with `tsc -b`, then bundle for production with Vite |
-| `npm run lint` | Lint the codebase with Oxlint |
-| `npm run preview` | Serve the production build locally to preview it |
-
 ## Configuration
 
 | File | What it controls |
 | --- | --- |
-| `src/config/constants.ts` | `APP_NAME` — default application name (fallback branding). |
-| `src/config/api.ts` | `BASE_URL` — backend API base URL used by the Axios client. |
-| `src/config/branding.ts` | Branding defaults (`DEFAULT_BRANDING`) and the `localStorage` key (`admin-panel:branding`). Branding is editable in Settings → Customize Branding. |
+| `src/config/api.ts` | `BASE_URL` (`/api/v1`) used by the Axios client. |
+| `src/config/branding.ts` | Branding defaults and the `localStorage` key; editable in Settings. |
+| `vite.config.ts` | Dev proxy for `/api` → backend. |
 
-### Changing the app name / branding
+## Known Limitations
 
-Edit `APP_NAME` in `src/config/constants.ts` to change the default fallback
-name. Users can override the live app name, logo letter, and logo from the
-**Settings → Customize Branding** panel; those values persist in `localStorage`
-and take priority over the constants.
-
-## Known Limitations / Roadmap
-
-The following are intentional simplifications for this version:
-
-- **Authentication is mock / client-side only.** The login page matches entered
-  credentials against the mock website list and redirects via
-  `window.location.href`. There is no server-side session or token handling.
-- **Data is static / mock.** Websites live in `src/data/mockData.ts` and are
-  mutated in memory only — changes are lost on refresh. There is no real
-  backend integration yet.
-- **Passwords are stored in plain text** in the mock data.
-
-### Next Steps
-
-- [ ] Connect a real backend API via `src/config/api.ts` (`BASE_URL`) and the
-      service layer (`src/services/websiteService.ts`).
-- [ ] Add real authentication (session/token-based) instead of client-side
-      matching.
-- [ ] Hash passwords and stop persisting plain-text credentials.
-- [ ] Persist website data to a database so changes survive reloads.
-- [ ] Move auth state into a shared context (`context/AuthContext.tsx`) once
-      real auth is introduced.
+- **Platform admins cannot delete organizations or website users** — the
+  backend reserves those actions for the master; the UI hides the buttons for
+  non-master accounts.
+- **Assigned-admins list** is visible to the master only (the API gates
+  `organization:assign` to the master).
+- **Dashboard growth chart** uses sample data until the backend exposes
+  time-series metrics.
