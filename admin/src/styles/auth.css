@@ -1,0 +1,143 @@
+.auth {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 20% 20%, var(--color-primary-soft), transparent 45%),
+    radial-gradient(circle at 80% 80%, var(--color-primary-soft), transparent 45%),
+    var(--color-bg);
+}
+
+.auth__card {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 36px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.auth__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.auth__logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  overflow: hidden;
+}
+
+.auth__logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.auth__title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.auth__subtitle {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+/* Login form */
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.login__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.login__control {
+  position: relative;
+}
+
+.login__control .input {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.login__icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.login__toggle {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  padding: 6px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.login__toggle:hover {
+  color: var(--color-text);
+}
+
+.login__error {
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--color-danger);
+  background: var(--color-danger-soft);
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  border-radius: var(--radius-sm);
+}
+
+.login__submit {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.login__demo {
+  margin-top: 4px;
+  padding: 10px 14px;
+  font-size: 13px;
+  text-align: center;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+}
+
+.login__demo strong {
+  color: var(--color-text);
+}
