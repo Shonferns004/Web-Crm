@@ -8,31 +8,31 @@ export default function PaymentSuccess() {
   const paymentId = params.get("payment_id") || "—";
 
   return (
-    <section className="py-14 px-6 lg:px-8 min-h-[70vh] flex items-center bg-surface">
-      <div className="max-w-[550px] mx-auto w-full brutal-border-heavy bg-white brutal-shadow p-6 text-center">
-        <Icon name="check" className="text-8xl text-primary mb-4 inline-flex brutal-border bg-primary-fixed rounded-full p-4" />
-        <h1 className="font-display-lg text-5xl uppercase text-primary tracking-tight mb-2">
+    <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 min-h-[70vh] flex items-center bg-surface">
+      <div className="max-w-[550px] mx-auto w-full bg-white rounded-[2rem] border border-primary/5 shadow-[0_10px_30px_-5px_rgba(138,0,72,0.08)] p-6 text-center">
+        <Icon name="check" className="text-7xl text-primary mb-4 inline-flex bg-secondary-fixed rounded-full p-5" />
+        <h1 className="font-display-lg font-extrabold text-5xl uppercase text-on-surface tracking-tight mb-2">
           Thank You!
         </h1>
-        <p className="text-xl text-primary opacity-80 mb-5">Your donation has been received successfully.</p>
+        <p className="text-xl text-on-surface-variant mb-5">Your donation has been received successfully.</p>
 
-        <div className="brutal-border bg-surface-container-high p-6 text-left space-y-4 mb-5">
+        <div className="rounded-2xl bg-surface-container-low p-6 text-left space-y-4 mb-5">
           <div className="flex justify-between items-center">
-            <span className="text-base text-primary opacity-70">Donation Amount</span>
+            <span className="text-base text-on-surface-variant">Donation Amount</span>
             <span className="font-display-lg text-2xl font-bold text-primary">
               ₹{amount ? Number(amount).toLocaleString("en-IN") : 0}
             </span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-base text-primary opacity-70">Project</span>
-            <span className="font-bold text-primary">{project}</span>
+            <span className="text-base text-on-surface-variant">Project</span>
+            <span className="font-bold text-on-surface">{project}</span>
           </div>
           <div className="flex justify-between items-center gap-4">
-            <span className="text-base text-primary opacity-70">Payment ID</span>
-            <span className="font-medium text-sm text-primary break-all">{paymentId}</span>
+            <span className="text-base text-on-surface-variant">Payment ID</span>
+            <span className="font-medium text-sm text-on-surface-variant break-all">{paymentId}</span>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-base text-primary opacity-70">Status</span>
+            <span className="text-base text-on-surface-variant">Status</span>
             <span className="font-bold text-green-700">
               <Icon name="check_circle" className="align-middle text-xl mr-1" />
               Completed
@@ -43,13 +43,13 @@ export default function PaymentSuccess() {
         <div className="flex flex-wrap justify-center gap-4">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 font-label-bold text-sm uppercase tracking-[0.15em] brutal-shadow-sm hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition"
+            className="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 font-label-bold text-sm uppercase tracking-[0.15em] rounded-2xl shadow-[0_10px_30px_-5px_rgba(138,0,72,0.4)] hover:bg-primary-container hover:scale-[1.02] transition"
           >
             <Icon name="home" className="text-xl" /> Go Home
           </Link>
           <Link
             to="/get-involved/donate-online"
-            className="inline-flex items-center gap-2 brutal-border border-primary text-primary px-8 py-4 font-label-bold text-sm uppercase tracking-[0.15em] bg-white hover:bg-primary-fixed transition"
+            className="inline-flex items-center gap-2 border border-primary/20 text-primary px-8 py-4 font-label-bold text-sm uppercase tracking-[0.15em] bg-white rounded-2xl hover:bg-secondary-fixed transition"
           >
             <Icon name="favorite" className="text-xl" /> Donate Again
           </Link>

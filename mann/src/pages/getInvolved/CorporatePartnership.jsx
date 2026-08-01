@@ -24,6 +24,9 @@ const benefits = [
   { title: "Long-term partnership model", desc: "Build a sustainable, long-term collaboration that evolves with your CSR goals and creates lasting community impact." },
 ];
 
+const cardCls =
+  "bg-white rounded-2xl border border-primary/5 shadow-[0_10px_30px_-5px_rgba(138,0,72,0.08)]";
+
 export default function CorporatePartnership() {
   const [openIndex, setOpenIndex] = useState(null);
   const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
@@ -32,15 +35,15 @@ export default function CorporatePartnership() {
     <>
       <PageHero desktop={img("/get-involved/hero2.jpeg")} mobile={img("/get-involved/mobile-slide2.jpeg")} alt="Corporate Partnership" />
 
-      <section className="py-14 md:py-14 px-6 lg:px-8 bg-surface">
+      <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface">
         <div className="max-w-[900px] mx-auto text-center">
-          <span className="inline-block px-3 py-1 bg-primary text-white font-label-bold text-xs uppercase tracking-[0.2em] mb-6">
+          <span className="inline-block px-4 py-1.5 bg-secondary-fixed text-primary font-label-bold text-xs uppercase tracking-widest rounded-full mb-6">
             CSR &amp; Collaboration
           </span>
-          <h1 className="font-display-lg text-6xl md:text-8xl text-primary leading-[0.9] tracking-tighter uppercase mb-6">
+          <h1 className="font-display-lg font-extrabold text-6xl md:text-8xl text-on-surface leading-[0.9] tracking-tighter uppercase mb-6">
             Corporate Partnership
           </h1>
-          <p className="text-2xl md:text-3xl text-primary">
+          <p className="text-2xl md:text-3xl text-on-surface-variant">
             Partner with us to create sustainable social impact through CSR initiatives, community
             programs, and long-term development projects.
           </p>
@@ -50,11 +53,11 @@ export default function CorporatePartnership() {
       <section className="pb-24 px-6 lg:px-8 bg-surface">
         <div className="max-w-[850px] mx-auto">
           <Reveal>
-            <div className="brutal-border-heavy bg-white brutal-shadow p-6 md:p-14">
-              <h2 className="font-display-lg text-4xl md:text-5xl uppercase text-primary tracking-tight mb-6">
+            <div className={`${cardCls} p-6 md:p-12`}>
+              <h2 className="font-display-lg font-extrabold text-4xl md:text-5xl uppercase text-on-surface tracking-tight mb-6">
                 Why Partner With Us?
               </h2>
-              <p className="flex items-start gap-4 text-lg md:text-xl text-primary leading-relaxed">
+              <p className="flex items-start gap-4 text-lg md:text-xl text-on-surface-variant leading-relaxed">
                 <Icon name="arrow_right_alt" className="text-primary mt-1 shrink-0" />
                 MANN Care Foundation works at the grassroots level focusing on women, children,
                 education, health, hygiene, animal welfare, and environment. Through corporate
@@ -66,18 +69,18 @@ export default function CorporatePartnership() {
         </div>
       </section>
 
-      <section className="py-14 md:py-14 px-6 lg:px-8 bg-surface-container-low">
+      <section className="py-10 md:py-16 px-6 lg:px-8 bg-surface-container-low">
         <div className="max-w-[1100px] mx-auto">
           <SectionHead tag="CSR Focus Areas" title="Where You Can Contribute" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {areas.map((a, i) => (
               <Reveal key={a.title} delay={i * 60}>
-                <div className="brutal-border-heavy bg-white p-8 brutal-shadow-sm hover:-translate-y-2 transition-all h-full text-center">
+                <div className={`${cardCls} p-8 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(138,0,72,0.14)] transition-all h-full text-center`}>
                   <span className="text-5xl block mb-5">{a.icon}</span>
-                  <h3 className="font-display-lg text-2xl uppercase text-primary tracking-tight mb-3">
+                  <h3 className="font-display-lg font-bold text-2xl uppercase text-on-surface tracking-tight mb-3">
                     {a.title}
                   </h3>
-                  <p className="text-base text-primary opacity-80">{a.desc}</p>
+                  <p className="text-base text-on-surface-variant">{a.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -85,25 +88,25 @@ export default function CorporatePartnership() {
         </div>
       </section>
 
-      <section className="py-14 md:py-14 px-6 lg:px-8 bg-surface">
+      <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface">
         <div className="max-w-[850px] mx-auto">
           <Reveal>
-            <div className="brutal-border-heavy bg-white brutal-shadow p-6 md:p-14">
-              <h2 className="font-display-lg text-4xl md:text-5xl uppercase text-primary tracking-tight mb-5">
+            <div className={`${cardCls} p-6 md:p-12`}>
+              <h2 className="font-display-lg font-extrabold text-4xl md:text-5xl uppercase text-on-surface tracking-tight mb-5">
                 Benefits For Your Organization
               </h2>
               <div className="space-y-4">
                 {benefits.map((b, i) => (
-                  <div key={b.title} className="brutal-border overflow-hidden bg-white">
+                  <div key={b.title} className="rounded-2xl border border-primary/5 overflow-hidden bg-white">
                     <button
                       onClick={() => toggle(i)}
-                      className="w-full flex items-center justify-between px-6 py-5 text-left font-label-bold text-base uppercase tracking-[0.08em] text-primary bg-surface-container-high hover:bg-primary-fixed transition"
+                      className="w-full flex items-center justify-between px-6 py-5 text-left font-label-bold text-base uppercase tracking-[0.08em] text-on-surface bg-surface-container-high hover:bg-secondary-fixed transition"
                     >
                       <span>{b.title}</span>
                       <Icon name="expand_more" className={`text-primary transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`} />
                     </button>
                     <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? "max-h-40 py-5 px-6" : "max-h-0"}`}>
-                      <p className="text-base text-primary opacity-80 leading-relaxed">{b.desc}</p>
+                      <p className="text-base text-on-surface-variant leading-relaxed">{b.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -118,7 +121,7 @@ export default function CorporatePartnership() {
       <section className="py-10 md:py-16 px-6 lg:px-8 bg-primary text-white">
         <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
-            <h2 className="font-display-lg text-5xl md:text-6xl uppercase tracking-tight mb-4">
+            <h2 className="font-display-lg font-extrabold text-5xl md:text-6xl uppercase tracking-tight mb-4">
               Let's Create Impact Together
             </h2>
             <p className="text-xl text-white/90">
@@ -127,7 +130,7 @@ export default function CorporatePartnership() {
           </div>
           <Link
             to="/contact/get-in-touch"
-            className="inline-flex items-center gap-3 bg-white text-primary font-label-bold text-base uppercase tracking-[0.15em] px-8 py-4 brutal-shadow-sm hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition shrink-0"
+            className="inline-flex items-center gap-3 bg-white text-primary font-label-bold text-base uppercase tracking-[0.15em] px-8 py-4 rounded-2xl shadow-[0_10px_30px_-5px_rgba(0,0,0,0.3)] hover:scale-105 transition shrink-0"
           >
             <Icon name="handshake" />
             Become a Partner

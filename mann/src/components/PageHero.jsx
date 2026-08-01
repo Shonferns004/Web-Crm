@@ -1,4 +1,3 @@
-// Brutalist inner-page hero: full-bleed image + big display title block
 import { img } from "../utils/images";
 
 export default function PageHero({ desktop, mobile, alt = "", title, className = "" }) {
@@ -13,9 +12,9 @@ export default function PageHero({ desktop, mobile, alt = "", title, className =
         />
       </picture>
       {title && (
-        <div className="absolute inset-x-0 bottom-0 p-6 md:p-12 bg-gradient-to-t from-black/50 to-transparent">
+        <div className="absolute inset-x-0 bottom-0 p-6 md:p-12 bg-gradient-to-t from-black/60 via-black/25 to-transparent">
           <div className="max-w-container-max mx-auto">
-            <h1 className="font-display-lg text-5xl md:text-8xl text-primary bg-white brutal-border-heavy brutal-shadow-sm inline-block px-4 md:px-6 py-2 md:py-3 uppercase tracking-tighter leading-[0.9]">
+            <h1 className="font-display-lg font-extrabold text-5xl md:text-8xl text-white uppercase tracking-tighter leading-[0.9] drop-shadow-lg">
               {title}
             </h1>
           </div>

@@ -12,6 +12,9 @@ const values = [
   { icon: "female", title: "Women Empowerment", desc: "Building confidence, skills, independence, and leadership." },
 ];
 
+const cardCls =
+  "bg-white rounded-2xl border border-primary/5 shadow-[0_10px_30px_-5px_rgba(138,0,72,0.08)]";
+
 export default function OurStory() {
   return (
     <>
@@ -22,14 +25,14 @@ export default function OurStory() {
         title="Our Story"
       />
 
-      <section className="py-14 md:py-14 px-6 lg:px-8 bg-surface">
+      <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface">
         <div className="max-w-[900px] mx-auto text-center space-y-6">
           <SectionHead
             tag="Empowering Women & Children"
             title="Transforming Communities"
             align="center"
           />
-          <p className="text-2xl md:text-3xl text-primary leading-snug">
+          <p className="text-2xl md:text-3xl text-on-surface-variant leading-snug">
             Building a future where every woman lives with dignity and every child has the
             opportunity to learn, grow, and thrive.
           </p>
@@ -39,20 +42,20 @@ export default function OurStory() {
       <section className="py-10 md:py-16 px-6 lg:px-8 bg-surface-container-low">
         <div className="max-w-[900px] mx-auto">
           <Reveal>
-            <div className="brutal-border-heavy p-6 md:p-8 bg-white brutal-shadow">
-              <h2 className="font-display-lg text-4xl md:text-5xl uppercase text-primary tracking-tight mb-6 text-center">
+            <div className={`${cardCls} p-6 md:p-10`}>
+              <h2 className="font-display-lg font-extrabold text-4xl md:text-5xl uppercase text-on-surface tracking-tight mb-8 text-center">
                 How It All Began
               </h2>
               <div className="space-y-8">
-                <p className="flex items-start gap-5 text-xl text-primary leading-relaxed">
+                <p className="flex items-start gap-5 text-xl text-on-surface-variant leading-relaxed">
                   <Icon name="arrow_right_alt" className="text-primary mt-1 shrink-0" />
                   MANN Care Foundation believes that true social progress begins with the well-being of women and children. A healthy woman nurtures a strong family, and an educated child shapes a brighter future.
                 </p>
-                <p className="flex items-start gap-5 text-xl text-primary leading-relaxed">
+                <p className="flex items-start gap-5 text-xl text-on-surface-variant leading-relaxed">
                   <Icon name="arrow_right_alt" className="text-primary mt-1 shrink-0" />
                   Guided by this belief, the Foundation was established to address essential yet often overlooked needs such as nutrition, education, menstrual hygiene, healthcare awareness, and women empowerment.
                 </p>
-                <p className="flex items-start gap-5 text-xl text-primary leading-relaxed">
+                <p className="flex items-start gap-5 text-xl text-on-surface-variant leading-relaxed">
                   <Icon name="arrow_right_alt" className="text-primary mt-1 shrink-0" />
                   Through compassionate action and community-driven solutions, MANN Care Foundation works to create meaningful and lasting change in the lives of underserved individuals and families.
                 </p>
@@ -62,25 +65,25 @@ export default function OurStory() {
         </div>
       </section>
 
-      <section className="py-14 md:py-14 px-6 lg:px-8 bg-surface-container-high">
+      <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface-container-high">
         <div className="max-w-[1000px] mx-auto">
           <SectionHead tag="Guiding Principles" title="Vision & Mission" />
           <div className="grid md:grid-cols-2 gap-10">
             <Reveal>
-              <div className="brutal-border-heavy p-6 bg-white brutal-shadow-sm text-center h-full">
-                <Icon name="public" className="text-7xl text-primary block mb-6" />
-                <h3 className="font-display-lg text-3xl uppercase text-primary tracking-tight mb-4">Our Vision</h3>
-                <p className="text-lg text-primary opacity-90 leading-relaxed">
+              <div className={`${cardCls} p-8 text-center h-full`}>
+                <Icon name="public" className="text-7xl text-primary block mb-6 mx-auto" />
+                <h3 className="font-display-lg font-extrabold text-3xl uppercase text-on-surface tracking-tight mb-4">Our Vision</h3>
+                <p className="text-lg text-on-surface-variant leading-relaxed">
                   To build an inclusive society where every woman and child has access to
                   opportunities, resources, health, education, and dignity.
                 </p>
               </div>
             </Reveal>
             <Reveal delay={100}>
-              <div className="brutal-border-heavy p-6 bg-white brutal-shadow-sm text-center h-full">
-                <Icon name="favorite" className="text-7xl text-primary block mb-6" />
-                <h3 className="font-display-lg text-3xl uppercase text-primary tracking-tight mb-4">Our Mission</h3>
-                <p className="text-lg text-primary opacity-90 leading-relaxed">
+              <div className={`${cardCls} p-8 text-center h-full`}>
+                <Icon name="favorite" className="text-7xl text-primary block mb-6 mx-auto" />
+                <h3 className="font-display-lg font-extrabold text-3xl uppercase text-on-surface tracking-tight mb-4">Our Mission</h3>
+                <p className="text-lg text-on-surface-variant leading-relaxed">
                   To empower women and children through sustainable programs focused on nutrition,
                   education, health, hygiene, and self-reliance.
                 </p>
@@ -90,18 +93,18 @@ export default function OurStory() {
         </div>
       </section>
 
-      <section className="py-14 md:py-14 px-6 lg:px-8 bg-surface">
+      <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface">
         <div className="max-w-[1100px] mx-auto">
           <SectionHead tag="What Drives Us" title="Our Core Focus Areas" />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((v, i) => (
               <Reveal key={v.title} delay={i * 80}>
-                <div className="brutal-border-heavy p-8 bg-white brutal-shadow-sm hover:-translate-y-2 transition-all h-full text-center">
+                <div className={`${cardCls} p-8 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(138,0,72,0.14)] transition-all h-full text-center`}>
                   <Icon name={v.icon} className="text-6xl text-primary block mb-5 mx-auto" />
-                  <h3 className="font-display-lg text-2xl uppercase text-primary tracking-tight mb-3">
+                  <h3 className="font-display-lg font-bold text-2xl uppercase text-on-surface tracking-tight mb-3">
                     {v.title}
                   </h3>
-                  <p className="text-base text-primary opacity-80">{v.desc}</p>
+                  <p className="text-base text-on-surface-variant">{v.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -112,7 +115,7 @@ export default function OurStory() {
       <section className="py-10 md:py-16 px-6 lg:px-8 bg-primary text-white">
         <div className="max-w-container-max mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
-            <h2 className="font-display-lg text-5xl md:text-6xl uppercase tracking-tight mb-4">
+            <h2 className="font-display-lg font-extrabold text-5xl md:text-6xl uppercase tracking-tight mb-4">
               Be A Part Of The Change
             </h2>
             <p className="text-xl text-white/90 max-w-[600px]">
@@ -122,7 +125,7 @@ export default function OurStory() {
           </div>
           <Link
             to="/get-involved/donate-online"
-            className="bg-white text-primary font-label-bold text-base uppercase tracking-[0.15em] px-8 py-4 brutal-shadow-sm hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all shrink-0"
+            className="bg-white text-primary font-label-bold text-base uppercase tracking-[0.15em] px-8 py-4 rounded-2xl shadow-[0_10px_30px_-5px_rgba(0,0,0,0.3)] hover:scale-105 transition-all shrink-0"
           >
             Support Our Mission
           </Link>

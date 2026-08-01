@@ -11,21 +11,24 @@ const boxes = [
   { title: "Contact Us", text: "Email: manncarefoundation@gmail.com | Phone: +91 7039006300" },
 ];
 
+const cardCls =
+  "bg-white rounded-2xl border border-primary/5 shadow-[0_10px_30px_-5px_rgba(138,0,72,0.08)]";
+
 export default function Policy() {
   return (
     <>
-      <PageHero desktop={img("/contact/hero2.jpeg")} mobile={img("/contact/mobile-slide2.jpeg")} alt="Privacy Policy" />
+      <PageHero desktop={img("/contact/hero2.jpeg")} mobile={img("/contact/mobile-slide2.jpeg")} alt="Privacy Policy" title="Privacy Policy" />
 
-      <section className="py-14 md:py-14 px-6 lg:px-8 bg-surface">
+      <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface">
         <div className="max-w-[850px] mx-auto">
           <SectionHead tag="Legal Notice" title="Privacy Policy" align="center" />
           <div className="space-y-6">
             {boxes.map((b) => (
-              <div key={b.title} className="brutal-border-heavy bg-white p-7 brutal-shadow-sm hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all">
-                <h2 className="font-display-lg text-2xl uppercase text-primary tracking-tight mb-2">
+              <div key={b.title} className={`${cardCls} p-7`}>
+                <h2 className="font-display-lg font-extrabold text-2xl uppercase text-on-surface tracking-tight mb-2">
                   {b.title}
                 </h2>
-                <p className="text-lg text-primary opacity-80">{b.text}</p>
+                <p className="text-lg text-on-surface-variant">{b.text}</p>
               </div>
             ))}
           </div>
