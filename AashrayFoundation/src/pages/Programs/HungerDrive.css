@@ -1,0 +1,6 @@
+@import "./DetailCommon.css";
+
+.hunger-page {
+  background: #eff3ff;
+  overflow-x: hidden;
+}

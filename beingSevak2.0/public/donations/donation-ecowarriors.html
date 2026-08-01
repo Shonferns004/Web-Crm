@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Eco Warriors – Donate | BSCT</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="../payment/razorpay.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy: #074D97;
+  --mid: #046FB1;
+  --cyan: #009BD4;
+  --cyan-light: #33bce8;
+  --gold: #D4AF37;
+  --white: #fff;
+  --light-bg: #f4f7fb;
+  --text-dark: #1a1a2e;
+  --text-mid: #4a5568;
+  --border: #d0eaf5;
+}
+body { font-family:'Open Sans',sans-serif; background:var(--light-bg); color:var(--text-dark); padding:20px; }
+
+.donate-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+  overflow: hidden;
+  animation: formIn 0.6s ease;
+}
+@keyframes formIn {
+  0% { opacity:0; transform:translateY(30px) scale(0.97); }
+  100% { opacity:1; transform:translateY(0) scale(1); }
+}
+
+.form-header {
+  background: linear-gradient(to right, #009BD4 0%, #0285C3 25%, #046FB1 50%, #074D97 75%, #083D8B 100%);
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.form-header::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(0,162,217,0.15), transparent);
+  animation: shine 8s linear infinite;
+}
+@keyframes shine {
+  0% { transform:rotate(0deg); }
+  100% { transform:rotate(360deg); }
+}
+.form-header-left { position: relative; z-index: 1; }
+.form-header-left h2 {
+  font-family:'Montserrat',sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--white);
+}
+.form-header-left p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.75);
+  margin-top: 4px;
+}
+.form-header-right {
+  text-align: right;
+  position: relative;
+  z-index: 1;
+}
+.form-header-right .badge-80g {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--navy);
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  padding: 5px 16px;
+  border-radius: 20px;
+}
+
+.form-body { padding: 28px 32px 32px; }
+
+.field-group { margin-bottom: 22px; }
+.field-group label {
+  display: block;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.field-group label .req { color: #e53935; }
+
+.freq-toggle {
+  display: flex;
+  max-width: 340px;
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 4px;
+  border: 2px solid var(--border);
+  margin-bottom: 22px;
+  gap : 20px ;
+}
+.freq-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.freq-btn.active {
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.freq-btn.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  animation: freqFlow 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes freqFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.eco-tabs {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.eco-tab {
+  padding: 20px 34px;
+  min-width: 160px;
+  border: 2px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+  font-family:'Montserrat',sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.eco-tab i { margin-right: 8px; font-size: 1rem; color: var(--cyan); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.eco-tab:hover { border-color: var(--cyan); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,162,217,0.18); }
+.eco-tab.active { border-color: var(--cyan); background: linear-gradient(135deg, var(--cyan), var(--mid)); color: var(--white); box-shadow: 0 6px 20px rgba(0,162,217,0.35); transform: translateY(-2px); }
+.eco-tab.active i { color: var(--white); }
+.eco-tab.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  animation: waterFlow 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes waterFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.eco-panel { display: none; }
+.eco-panel.active { display: block; animation: panelSlide 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes panelSlide {
+  0% { opacity: 0; transform: translateY(30px) scale(0.97); clip-path: inset(0 0 20px 0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); clip-path: inset(0 0 0 0); }
+}
+.eco-panel.active .eco-desc h3 {
+  animation: fadeUpItem 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+.eco-panel.active .eco-desc p {
+  animation: fadeUpItem 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+.eco-panel.active .eco-impact span {
+  animation: fadeUpItem 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+@keyframes fadeUpItem {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.eco-desc {
+  background: #f0f8ff;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 22px;
+}
+.eco-desc h3 {
+  font-family:'Montserrat',sans-serif;
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.eco-desc h3 i { color: var(--cyan); margin-right: 8px; }
+.eco-desc p {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.eco-impact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.eco-impact .cost-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  color: var(--text-mid);
+}
+.eco-impact .cost-row .cost-label { font-weight: 600; }
+.eco-impact .cost-row .cost-value { font-weight: 700; color: var(--cyan); }
+.eco-impact .cost-row.total {
+  background: #e8f4fc;
+  border-color: var(--cyan);
+  font-size: 0.9rem;
+}
+.eco-impact .cost-row.total .cost-label { font-weight: 700; color: var(--navy); }
+.eco-impact .cost-row.total .cost-value { font-size: 1.05rem; }
+
+.amount-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.amount-box {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f9fdff;
+  transition: border-color 0.3s;
+}
+.amount-box:focus-within { border-color: var(--cyan); }
+.amount-box .rupee {
+  padding: 14px 16px;
+  font-size: 18px;
+  color: var(--text-mid);
+  font-weight: 600;
+  border-right: 2px solid var(--border);
+  background: #eef8fc;
+}
+.amount-box input {
+  border: none; outline: none;
+  padding: 14px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  width: 150px;
+  background: transparent;
+  color: var(--navy);
+}
+.amt-preset {
+  padding: 12px 22px;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family:'Montserrat',sans-serif;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  line-height: 1.3;
+}
+.amt-preset small {
+  font-size: 0.6rem;
+  font-weight: 400;
+  opacity: 0.7;
+  display: block;
+}
+.amt-preset:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+.amt-preset:hover small { opacity: 1; }
+.amt-preset.active { background: var(--cyan); border-color: var(--cyan); color: var(--white); }
+.amt-preset.active small { opacity: 0.9; }
+
+.preset-group { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.form-grid .full { grid-column: 1 / -1; }
+.form-group { margin-bottom: 0; }
+.form-group label {
+  display: block;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--navy);
+  margin-bottom: 5px;
+}
+.form-group label .req { color: #e53935; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family:'Open Sans',sans-serif;
+  color: var(--text-dark);
+  background: #f9fdff;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0,162,217,0.12);
+}
+.form-group textarea { min-height: 70px; resize: vertical; }
+
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 2px solid var(--border);
+}
+.total-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.total-label {
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--navy);
+}
+.total-val {
+  font-family:'Montserrat',sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--cyan);
+}
+.donate-btn-eco {
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  border: none;
+  padding: 14px 36px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family:'Montserrat',sans-serif;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,162,217,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.donate-btn-eco::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+.donate-btn-eco:hover::before { left: 100%; }
+.donate-btn-eco:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(0,162,217,0.35); }
+
+/* ── DISTRIBUTION TYPE SECTION ── */
+.dist-section {
+  padding: 20px 24px 10px;
+  background: #f8fcff;
+  border-bottom: 2px solid var(--border);
+}
+.dist-section-head {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.dist-section-head h3 {
+  font-family:'Montserrat',sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.dist-section-head p {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+}
+
+/* ── LANDSCAPE ── */
+.donate-wrap.landscape{max-width:1100px;}
+.donate-wrap.landscape .form-header{padding:16px 24px;}
+.donate-wrap.landscape .form-body{padding:16px 20px;}
+.donate-wrap.landscape .field-group{margin-bottom:12px;}
+.donate-wrap.landscape .top-row{display:flex;gap:16px;flex-wrap:wrap;}
+.donate-wrap.landscape .top-row .col{flex:1;min-width:180px;}
+.donate-wrap.landscape .eco-tab{padding:14px 24px;font-size:0.78rem;}
+.donate-wrap.landscape .eco-tab i{font-size:0.95rem;margin-right:6px;}
+.donate-wrap.landscape .freq-toggle{margin-bottom:0;}
+.donate-wrap.landscape .freq-btn{padding:8px 14px;font-size:0.75rem ; height: 7vh;;}
+.donate-wrap.landscape .amount-row{flex-wrap:nowrap;}
+.donate-wrap.landscape .amt-preset{padding:8px 14px;font-size:0.85rem;}
+.donate-wrap.landscape .eco-desc{padding:10px 14px;margin-bottom:10px;}
+.donate-wrap.landscape .eco-desc p{font-size:0.78rem;margin-bottom:6px;line-height:1.4;}
+.donate-wrap.landscape .eco-impact .cost-row{padding:6px 12px;font-size:0.75rem;}
+.donate-wrap.landscape .form-grid{grid-template-columns:1fr 1fr 1fr 1fr 1fr;}
+.donate-wrap.landscape .form-grid .full{grid-column:auto;}
+.donate-wrap.landscape .form-group input,.donate-wrap.landscape .form-group textarea{padding:7px 10px;font-size:0.78rem;}
+.donate-wrap.landscape .form-group textarea{min-height:36px;}
+.donate-wrap.landscape .action-row{margin-top:12px;padding-top:12px;}
+.donate-wrap.landscape .donate-btn-eco{padding:10px 24px;font-size:0.85rem;}
+@media(max-width:768px){
+  .donate-wrap.landscape .top-row{flex-direction:column;}
+  .donate-wrap.landscape .top-row .col{min-width:100%;}
+  .donate-wrap.landscape .form-grid{grid-template-columns:1fr 1fr;}
+  .donate-wrap.landscape .eco-tabs{flex-wrap:wrap;}
+  .donate-wrap.landscape .amount-row{flex-wrap:wrap;}
+}
+
+@media (max-width: 600px) {
+  .form-body { padding: 20px 18px; }
+  .eco-tab { width: 100%; justify-content: center; }
+  .form-grid { grid-template-columns: 1fr; }
+  .action-row { flex-direction: column; align-items: stretch; }
+  .donate-btn-eco { width: 100%; text-align: center; }
+  .amount-row { gap: 8px; }
+  .amount-box input { width: 80px; padding: 10px; font-size: 15px; }
+  .amount-box .rupee { padding: 10px; font-size: 15px; }
+  .amt-preset { padding: 8px 12px; font-size: 0.78rem; }
+  .preset-group { gap: 6px; }
+}
+.name-error {
+  display: none;
+  color: #e53935;
+  font-size: 0.72rem;
+  font-family: 'Open Sans', sans-serif;
+  margin-top: 4px;
+  background: #fff0f0;
+  border: 1px solid #fdd;
+  border-radius: 6px;
+  padding: 4px 10px;
+  animation: popIn 0.3s ease;
+}
+.name-error.show { display: inline-block; }
+@keyframes popIn {
+  0% { opacity: 0; transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="donate-wrap landscape">
+  <div class="form-header">
+    <div class="form-header-left">
+      <h2><i class="fas fa-leaf"></i> Eco Warriors</h2>
+      <p>Your contribution helps make a difference</p>
+    </div>
+    <div class="form-header-right">
+      <span class="badge-80g">80G TAX EXEMPTION</span>
+    </div>
+  </div>
+  <div class="dist-section">
+    <div class="dist-section-head">
+      <!-- <h3>Choose Distribution Type</h3>
+      <p>Select the type of distribution you want to support</p> -->
+    </div>
+    <div class="eco-tabs" id="ecoTabs">
+      <button class="eco-tab active" data-eco="crusher" onclick="selectEco(this)">
+        <i class="fas fa-recycle"></i> Bottle Crusher
+      </button>
+      <button class="eco-tab" data-eco="plantation" onclick="selectEco(this)">
+        <i class="fas fa-tree"></i> Tree Plantation
+      </button>
+      <button class="eco-tab" data-eco="beach" onclick="selectEco(this)">
+        <i class="fas fa-umbrella-beach"></i> Beach Cleaning
+      </button>
+    </div>
+  </div>
+  <div class="form-body">
+
+    <div class="top-row">
+      <div class="col">
+        <div class="field-group">
+          <label>Frequency <span class="req">*</span></label>
+          <div class="freq-toggle">
+            <button class="freq-btn active" onclick="selectFreq('once', this)">Just Once</button>
+            <button class="freq-btn" onclick="selectFreq('monthly', this)">Give Monthly</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <label>Donation Amount <span class="req">*</span></label>
+          <div class="amount-row">
+            <div class="amount-box">
+              <span class="rupee">₹</span>
+              <input type="number" id="donateAmount" value="10000" min="1" oninput="updateTotal()"/>
+            </div>
+            <div class="preset-group once-presets crusher-presets">
+              <button class="amt-preset active" onclick="setAmt(10000,this)">₹10,000 <small>Misc</small></button>
+              <button class="amt-preset" onclick="setAmt(192000,this)">₹1,92,000 <small>Maint</small></button>
+              <button class="amt-preset" onclick="setAmt(360000,this)">₹3,60,000 <small>Machine</small></button>
+              <button class="amt-preset" onclick="setAmt(562000,this)">₹5,62,000 <small>Total</small></button>
+            </div>
+            <div class="preset-group once-presets general-presets" style="display:none">
+              <button class="amt-preset active" onclick="setAmt(750,this)">₹750</button>
+              <button class="amt-preset" onclick="setAmt(1500,this)">₹1,500</button>
+              <button class="amt-preset" onclick="setAmt(2500,this)">₹2,500</button>
+              <button class="amt-preset" onclick="setAmt(5000,this)">₹5,000</button>
+              <button class="amt-preset" onclick="setAmt(10000,this)">₹10,000</button>
+            </div>
+            <div class="preset-group monthly-presets" style="display:none">
+              <button class="amt-preset active" onclick="setAmt(500,this)">₹500</button>
+              <button class="amt-preset" onclick="setAmt(1000,this)">₹1,000</button>
+              <button class="amt-preset" onclick="setAmt(2000,this)">₹2,000</button>
+              <button class="amt-preset" onclick="setAmt(5000,this)">₹5,000</button>
+              <button class="amt-preset" onclick="setAmt(10000,this)">₹10,000</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottle Crusher -->
+    <div class="eco-panel active" id="panel-crusher">
+      <div class="eco-desc">
+        <h3><i class="fas fa-recycle"></i> Bottle Crusher Machine Setup</h3>
+        <p>Help us set up bottle crusher machines to tackle plastic waste in our community. These machines crush plastic bottles into compact recyclable material, reducing landfill burden and creating opportunities for recycling. Your support covers machine procurement, installation, annual maintenance, and operational contingencies.</p>
+        <div class="eco-impact">
+          <div class="cost-row">
+            <span class="cost-label"><i class="fas fa-cogs"></i> Machine Cost (₹1,80,000 × 2 machines)</span>
+            <span class="cost-value">₹3,60,000</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label"><i class="fas fa-tools"></i> Maintenance (₹8,000/machine/month × 12 months × 2 machines)</span>
+            <span class="cost-value">₹1,92,000</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label"><i class="fas fa-boxes"></i> Miscellaneous &amp; Contingency</span>
+            <span class="cost-value">₹10,000</span>
+          </div>
+          <div class="cost-row total">
+            <span class="cost-label"><i class="fas fa-calculator"></i> Total Project Cost</span>
+            <span class="cost-value">₹5,62,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tree Plantation -->
+    <div class="eco-panel" id="panel-plantation">
+      <div class="eco-desc">
+        <h3><i class="fas fa-tree"></i> Tree Plantation Drive</h3>
+        <p>Support our tree plantation drives across urban and rural areas. Each contribution helps us plant and nurture native saplings, restore green cover, and fight climate change. Your donation covers saplings, transportation, planting tools, watering, and long-term maintenance.</p>
+        <div class="eco-impact">
+          <div class="cost-row">
+            <span class="cost-label"><i class="fas fa-seedling"></i> Saplings (₹50 × 500 trees)</span>
+            <span class="cost-value">₹25,000</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label"><i class="fas fa-truck"></i> Transportation & Logistics</span>
+            <span class="cost-value">₹8,000</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label"><i class="fas fa-hand-holding-water"></i> Watering & Maintenance (6 months)</span>
+            <span class="cost-value">₹12,000</span>
+          </div>
+          <div class="cost-row total">
+            <span class="cost-label"><i class="fas fa-calculator"></i> Total Project Cost</span>
+            <span class="cost-value">₹45,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beach Cleaning -->
+    <div class="eco-panel" id="panel-beach">
+      <div class="eco-desc">
+        <h3><i class="fas fa-umbrella-beach"></i> Beach Cleaning Drive</h3>
+        <p>Join our efforts to clean and protect coastal ecosystems. Your contribution funds beach clean-up drives, waste segregation, recycling of collected debris, and awareness campaigns to keep our shores pristine for generations to come.</p>
+        <div class="eco-impact">
+          <div class="cost-row">
+            <span class="cost-label"><i class="fas fa-gloves"></i> Clean-up Equipment (gloves, bags, tools)</span>
+            <span class="cost-value">₹15,000</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label"><i class="fas fa-truck"></i> Waste Collection & Transportation</span>
+            <span class="cost-value">₹10,000</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label"><i class="fas fa-recycle"></i> Recycling & Disposal</span>
+            <span class="cost-value">₹8,000</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label"><i class="fas fa-users"></i> Volunteer Coordination & Refreshments</span>
+            <span class="cost-value">₹7,000</span>
+          </div>
+          <div class="cost-row total">
+            <span class="cost-label"><i class="fas fa-calculator"></i> Total Project Cost</span>
+            <span class="cost-value">₹40,000</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>First Name <span class="req">*</span></label>
+        <input type="text" id="fname" placeholder="First Name" oninput="validateName(this,'fname-error')"/>
+        <span class="name-error" id="fname-error">Invalid name</span>
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" id="lname" placeholder="Last Name" oninput="validateName(this,'lname-error')"/>
+        <span class="name-error" id="lname-error">Invalid name</span>
+      </div>
+      <div class="form-group">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="Email Address" oninput="validateEmail(this,'email-error')"/>
+        <span class="name-error" id="email-error">Invalid email</span>
+      </div>
+      <div class="form-group">
+        <label>Phone <span class="req">*</span></label>
+        <input type="tel" id="phone" placeholder="Phone Number" oninput="validatePhone(this,'phone-error')"/>
+        <span class="name-error" id="phone-error">Phone number must contain 10 digits.</span>
+      </div>
+      <div class="form-group full">
+        <label>Message (optional)</label>
+        <textarea id="message" placeholder="Leave a message..." maxlength="100" oninput="validateMsg(this)"></textarea>
+        <span class="name-error" id="msg-error">Only 100 characters accept</span>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <div class="total-box">
+        <span class="total-label">Donation Total:</span>
+        <span class="total-val" id="totalDisplay">₹10,000.00</span>
+      </div>
+      <button class="donate-btn-eco" onclick="handleDonate()">
+        <i class="fas fa-heart"></i> Donate Now
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+let nameTimers = {};
+function validateName(el, errorId) {
+  const err = document.getElementById(errorId);
+  if (/[^a-zA-Z\s]/.test(el.value)) {
+    el.value = el.value.replace(/[^a-zA-Z\s]/g, '');
+    err.classList.add('show');
+    clearTimeout(nameTimers[errorId]);
+    nameTimers[errorId] = setTimeout(() => err.classList.remove('show'), 2000);
+  }
+}
+function validateEmail(el, errorId) {
+  const err = document.getElementById(errorId);
+  if (/[^a-zA-Z0-9@.]/.test(el.value)) {
+    el.value = el.value.replace(/[^a-zA-Z0-9@.]/g, '');
+    err.textContent = 'Invalid email';
+    err.classList.add('show');
+    clearTimeout(nameTimers[errorId]);
+    nameTimers[errorId] = setTimeout(() => err.classList.remove('show'), 2000);
+    return;
+  }
+  err.classList.remove('show');
+}
+function validatePhone(el, errorId) {
+  const err = document.getElementById(errorId);
+  if (/[^0-9]/.test(el.value)) {
+    el.value = el.value.replace(/[^0-9]/g, '');
+    return;
+  }
+  if (el.value.length > 10) {
+    el.value = el.value.slice(0, 10);
+    err.textContent = 'Phone number must contain 10 digits.';
+    err.classList.add('show');
+    clearTimeout(nameTimers[errorId]);
+    nameTimers[errorId] = setTimeout(() => err.classList.remove('show'), 2000);
+    return;
+  }
+  err.classList.remove('show');
+}
+function validateMsg(el) {
+  const err = document.getElementById('msg-error');
+  if (el.value.length >= 100) {
+    err.classList.add('show');
+    clearTimeout(nameTimers['msg-error']);
+    nameTimers['msg-error'] = setTimeout(() => err.classList.remove('show'), 2000);
+  } else {
+    err.classList.remove('show');
+  }
+}
+function selectEco(el) {
+  document.querySelectorAll('.eco-tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.eco-panel').forEach(p => {
+    p.classList.remove('active');
+    void p.offsetHeight;
+  });
+  document.getElementById('panel-' + el.dataset.eco).classList.add('active');
+
+  // Toggle amount presets based on tab
+  document.querySelectorAll('.preset-group').forEach(g => g.style.display = 'none');
+  if (el.dataset.eco === 'crusher') {
+    document.querySelector('.crusher-presets').style.display = 'flex';
+    const first = document.querySelector('.crusher-presets .amt-preset');
+    if (first) setAmt(parseInt(first.getAttribute('onclick').match(/\d+/)[0]), first);
+  } else {
+    document.querySelector('.general-presets').style.display = 'flex';
+    const first = document.querySelector('.general-presets .amt-preset');
+    if (first) setAmt(parseInt(first.getAttribute('onclick').match(/\d+/)[0]), first);
+  }
+
+  setTimeout(sendHeight, 100);
+}
+
+let donationFreq = 'once';
+function selectFreq(val, btn) {
+  document.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  donationFreq = val;
+  document.querySelectorAll('.preset-group').forEach(g => g.style.display = 'none');
+  if (val === 'once') {
+    const activeTab = document.querySelector('.eco-tab.active');
+    if (activeTab && activeTab.dataset.eco === 'crusher') {
+      document.querySelector('.crusher-presets').style.display = 'flex';
+    } else {
+      document.querySelector('.general-presets').style.display = 'flex';
+    }
+  } else {
+    document.querySelector('.' + val + '-presets').style.display = 'flex';
+  }
+  const group = document.querySelector('.preset-group[style*="flex"]');
+  const first = group ? group.querySelector('.amt-preset') : null;
+  if (first) setAmt(parseInt(first.getAttribute('onclick').match(/\d+/)[0]), first);
+  setTimeout(sendHeight, 100);
+}
+
+function setAmt(val, btn) {
+  document.getElementById('donateAmount').value = val;
+  document.querySelectorAll('.amt-preset').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateTotal();
+  setTimeout(sendHeight, 100);
+}
+
+function updateTotal() {
+  const n = parseFloat(document.getElementById('donateAmount').value) || 0;
+  document.getElementById('totalDisplay').textContent = '₹' + n.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function handleDonate() {
+  const amt = document.getElementById('donateAmount').value;
+  const name = document.getElementById('fname').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const phoneErr = document.getElementById('phone-error');
+  if (!phone || phone.length !== 10) {
+    phoneErr.textContent = 'Phone number must contain 10 digits.';
+    phoneErr.classList.add('show');
+    clearTimeout(window._phoneErrTimer);
+    window._phoneErrTimer = setTimeout(() => phoneErr.classList.remove('show'), 3000);
+    return;
+  }
+  const activeTab = document.querySelector('.eco-tab.active');
+  const programme = activeTab ? activeTab.textContent.trim() : 'General Donation';
+  donateWithRazorpay({
+    amount: amt,
+    name: name,
+    email: email,
+    phone: phone,
+    description: 'Donation - Eco Warriors - ' + programme,
+    mission: 'Eco Warriors'
+  });
+}
+</script>
+
+<script>
+function sendHeight() {
+  var h = document.documentElement.scrollHeight;
+  parent.postMessage(h, '*');
+}
+window.addEventListener('load', function() { setTimeout(sendHeight, 300); });
+window.addEventListener('resize', function() { setTimeout(sendHeight, 200); });
+</script>
+  
+</body>
+</html>

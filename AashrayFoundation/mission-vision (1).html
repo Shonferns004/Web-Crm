@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mission &amp; Vision</title>
+<style>
+  :root {
+    --navy-deep: #0a1730;
+    --navy-light: #1e3a6e;
+    --sun: #f6b73c;
+    --blue-100: #dbe6ff;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--navy-deep);
+    color: var(--white);
+  }
+
+  /* ===== MISSION & VISION SECTION ===== */
+  .mv-section {
+    position: relative;
+    padding: 80px 0;
+    overflow: hidden;
+    background: var(--navy-deep);
+  }
+  @media (min-width: 640px) {
+    .mv-section { padding: 112px 0; }
+  }
+
+  /* Fixed background image — scroll par hilta nahi */
+  .mv-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('your-photo.jpg'); /* <-- apni photo ka path yahan */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  /* Blue overlay taaki text saaf dikhe */
+  .mv-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 23, 48, 0.85);
+  }
+
+  /* Soft glows */
+  .mv-glow {
+    pointer-events: none;
+    position: absolute;
+    width: 18rem;
+    height: 18rem;
+    border-radius: 9999px;
+    filter: blur(64px);
+  }
+  .mv-glow-1 {
+    top: -2.5rem;
+    left: 5%;
+    background: rgba(30, 58, 110, 0.4);
+  }
+  .mv-glow-2 {
+    bottom: 0;
+    right: 5%;
+    background: rgba(246, 183, 60, 0.15);
+  }
+
+  /* Container */
+  .mv-container {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    gap: 48px;
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .mv-container {
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+    }
+  }
+
+  /* Heading */
+  .mv-heading {
+    font-weight: 800;
+    font-size: 2.25rem;
+    line-height: 1.15;
+  }
+  @media (min-width: 640px) {
+    .mv-heading { font-size: 3rem; }
+  }
+  .mv-heading .white { color: var(--white); }
+  .mv-heading .sun { color: var(--sun); }
+
+  /* Mission / Vision blocks */
+  .mv-blocks {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .mv-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    margin-bottom: 16px;
+  }
+  .mv-icon svg { width: 24px; height: 24px; }
+  .mv-block-title {
+    font-weight: 700;
+    color: var(--white);
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+  .mv-block-text {
+    color: rgba(219, 230, 255, 0.8);
+    line-height: 1.7;
+    max-width: 28rem;
+  }
+
+  /* Right image */
+  .mv-image-wrap {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1);
+  }
+  .mv-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Simple reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== MISSION & VISION ===== -->
+<section class="mv-section">
+  <!-- fixed background image -->
+  <div class="mv-bg"></div>
+  <!-- blue overlay -->
+  <div class="mv-overlay"></div>
+
+  <!-- soft glows -->
+  <div class="mv-glow mv-glow-1"></div>
+  <div class="mv-glow mv-glow-2"></div>
+
+  <div class="mv-container">
+
+    <!-- LEFT — heading + mission + vision -->
+    <div>
+      <h2 class="mv-heading">
+        <span class="white">Our Mission &amp; </span>
+        <span class="sun">Our Vision</span>
+      </h2>
+
+      <div class="mv-blocks">
+        <div class="reveal">
+          <div class="mv-icon">
+            <!-- check_circle icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12l2 2 4-4M12 21a9 9 0 110-18 9 9 0 010 18z" />
+            </svg>
+          </div>
+          <h3 class="mv-block-title">Our Mission</h3>
+          <p class="mv-block-text">
+            To create a Just, Equitable and Humane Society through holistic and sustainable interventions in the seven key sectors of social development.
+          </p>
+        </div>
+
+        <div class="reveal">
+          <div class="mv-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12l2 2 4-4M12 21a9 9 0 110-18 9 9 0 010 18z" />
+            </svg>
+          </div>
+          <h3 class="mv-block-title">Our Vision</h3>
+          <p class="mv-block-text">
+            To build a self-reliant society where every individual, regardless of their socio-economic status, has access to basic necessities and opportunities for a dignified life.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT — image -->
+    <div class="reveal mv-image-wrap">
+      <img src="mission-image.jpg" alt="Our mission in action" />
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // Simple reveal-on-scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

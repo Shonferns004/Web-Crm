@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #03163E;
+  --color-mid: #315371;
+  --color-cyan: #00A2D9;
+  --color-cyan-light: #33bce8;
+  --color-green: #2eb85c;
+  --color-gold: #D4AF37;
+  --color-light-bg: #f4f7fb;
+  --color-text-dark: #1a1a2e;
+  --color-text-mid: #4a5568;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: "Open Sans", sans-serif; margin: 0; padding: 0; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+input, select { font-family: inherit; outline: none; border: none; }
+
+@keyframes floatCard {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-15px); }
+}
+
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); width: fit-content; }
+
+.value-card-fill::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0%;
+  background: #00A2D9;
+  transition: 0.5s ease;
+  z-index: 1;
+}
+.value-card-fill:hover::before {
+  height: 100%;
+}
+.value-card-fill:hover {
+  transform: translateY(-12px);
+}
+.value-card-fill:hover .vc-icon,
+.value-card-fill:hover .vc-title,
+.value-card-fill:hover .vc-desc {
+  color: #fff !important;
+}
+
+.testimonial-card-fill::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0%;
+  background: #00A2D9;
+  transition: 0.4s ease;
+  z-index: 1;
+  border-radius: 28px;
+}
+.testimonial-card-fill:hover::before {
+  height: 100%;
+}
+.testimonial-card-fill:hover {
+  transform: translateY(-10px);
+}
+.testimonial-card-fill:hover .tc-quote,
+.testimonial-card-fill:hover .tc-name,
+.testimonial-card-fill:hover .tc-role,
+.testimonial-card-fill:hover .tc-quote-icon {
+  color: #fff !important;
+}

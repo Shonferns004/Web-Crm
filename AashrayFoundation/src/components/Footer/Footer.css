@@ -1,0 +1,111 @@
+.footer {
+  background:#0a1730;
+  color: #ccc;
+  padding: 24px 0 0;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  border-bottom: 1px solid #333;
+}
+.footer-col h5 {
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.footer-col li { margin-bottom: 4px; }
+.footer-col a {
+  color: #aaa;
+  font-size: 0.88rem;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: #fff; }
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.footer-social a {
+  color: #aaa;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+.footer-social a:hover {
+  color: #f6b73c;
+}
+.footer-social a svg {
+  width: 16px;
+  height: 16px;
+}
+.footer-social-img {
+  width: 40px;
+  height: 40px;
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.footer-qr {
+  margin-top: 8px;
+}
+.footer-qr-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.footer-qr img {
+  width: 160px;
+  height: 160px;
+  border-radius: 8px;
+  object-fit: contain;
+  display: block;
+}
+.footer-social-bar {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.footer-social-bar a {
+  color: #aaa;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+.footer-social-bar a:hover {
+  color: #f6b73c;
+}
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px 16px;
+  font-size: 0.75rem;
+  color: #fff;
+  line-height: 1.5;
+}
+.footer-bottom p { margin-bottom: 2px; }
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+.footer-links a {
+  color: #888;
+  font-size: 0.82rem;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: #ccc; }

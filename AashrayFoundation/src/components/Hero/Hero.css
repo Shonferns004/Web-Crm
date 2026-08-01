@@ -1,0 +1,47 @@
+.hero {
+  position: relative;
+  min-height: 560px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #2d4a6b 100%);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('https://plca-p-001.sitecorecontenthub.cloud/api/public/content/a2d760fae68a4bf28dacf61ba9558aa2?v=656e23d4') center/cover no-repeat;
+  opacity: 0.35;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0.1) 100%);
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+  margin-left: max(24px, calc(50vw - 600px));
+  padding: 80px 24px;
+  color: #fff;
+}
+.match-badge {
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
+}
+.hero-content h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.hero-content p {
+  font-size: 1.15rem;
+  opacity: 0.9;
+  margin-bottom: 32px;
+  line-height: 1.7;
+}

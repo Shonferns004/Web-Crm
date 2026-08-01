@@ -1,0 +1,55 @@
+.join-cta {
+  background: #4a6fa5;
+  padding: 28px 0;
+}
+.join-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.join-cta-text {
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+}
+.join-donate-btn {
+  display: inline-block;
+  background: #2e2c8a;
+  color: #fff;
+  padding: 12px 32px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(46,44,138,0.25);
+}
+.join-donate-btn:hover {
+  background: #3d3a9e;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(46,44,138,0.4);
+  color: #fff;
+}
+
+.join-tax {
+  background: #c6dbef;
+  padding: 16px 0;
+  text-align: center;
+}
+.join-tax p {
+  color: #000;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .join-cta-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+}

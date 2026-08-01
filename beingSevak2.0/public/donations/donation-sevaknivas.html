@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Sevak Nivas – Donate | BSCT</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="../payment/razorpay.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy: #074D97;
+  --mid: #046FB1;
+  --cyan: #009BD4;
+  --cyan-light: #33bce8;
+  --green: #2eb85c;
+  --gold: #D4AF37;
+  --white: #fff;
+  --light-bg: #f4f7fb;
+  --text-dark: #1a1a2e;
+  --text-mid: #4a5568;
+  --border: #d0eaf5;
+}
+body { font-family:'Open Sans',sans-serif; background:var(--light-bg); color:var(--text-dark); padding:20px; }
+
+.donate-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+  overflow: hidden;
+  animation: formIn 0.6s ease;
+}
+@keyframes formIn {
+  0% { opacity:0; transform:translateY(30px) scale(0.97); }
+  100% { opacity:1; transform:translateY(0) scale(1); }
+}
+
+.form-header {
+  background: linear-gradient(to right, #009BD4 0%, #0285C3 25%, #046FB1 50%, #074D97 75%, #083D8B 100%);
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+.form-header::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(0,162,217,0.15), transparent);
+  animation: shine 8s linear infinite;
+}
+@keyframes shine {
+  0% { transform:rotate(0deg); }
+  100% { transform:rotate(360deg); }
+}
+.form-header-left {
+  position: relative;
+  z-index: 1;
+}
+.form-header-left h2 {
+  font-family:'Montserrat',sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--white);
+}
+.form-header-left p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.8);
+  margin-top: 6px;
+}
+.form-header-right {
+  text-align: right;
+  position: relative;
+  z-index: 1;
+}
+.form-header-right .badge-80g {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--navy);
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  padding: 5px 16px;
+  border-radius: 20px;
+}
+
+.form-body { padding: 28px 32px 32px; }
+
+.field-group { margin-bottom: 22px; }
+.field-group label {
+  display: block;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.field-group label .req { color: #e53935; }
+
+.freq-toggle {
+  display: flex;
+  max-width: 340px;
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 4px;
+  border: 2px solid var(--border);
+  margin-bottom: 22px;
+}
+.freq-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.freq-btn.active {
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.freq-btn.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  animation: freqFlow 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes freqFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.cause-select {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.cause-option {
+  flex: 1;
+  min-width: 140px;
+  padding: 14px 10px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--white);
+  font-family:'Montserrat',sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cause-option i { display: block; font-size: 1.5rem; margin-bottom: 6px; color: var(--cyan); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.cause-option:hover { border-color: var(--cyan); transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,162,217,0.18); }
+.cause-option.active { border-color: var(--cyan); background: linear-gradient(135deg, var(--cyan), var(--mid)); color: var(--white); box-shadow: 0 8px 25px rgba(0,162,217,0.35); transform: translateY(-2px) scale(1.03); }
+.cause-option.active i { color: var(--white); transform: scale(1.2); }
+.cause-option .cause-price {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--cyan);
+  margin-top: 6px;
+  transition: color 0.3s;
+}
+.cause-option.active .cause-price {
+  color: rgba(255,255,255,0.9);
+}
+.cause-option.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  animation: waterFlow 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes waterFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.panel-desc {
+  background: #f0f8ff;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 22px;
+}
+.panel-desc h3 {
+  font-family:'Montserrat',sans-serif;
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.panel-desc h3 i { color: var(--cyan); margin-right: 8px; }
+.panel-desc p {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.panel-desc p:last-child { margin-bottom: 0; }
+
+.amount-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.amount-box {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f9fdff;
+  transition: border-color 0.3s;
+}
+.amount-box:focus-within { border-color: var(--cyan); }
+.amount-box .rupee {
+  padding: 10px 12px;
+  font-size: 15px;
+  color: var(--text-mid);
+  font-weight: 600;
+  border-right: 2px solid var(--border);
+  background: #eef8fc;
+}
+.amount-box input {
+  border: none; outline: none;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  width: 110px;
+  background: transparent;
+  color: var(--navy);
+}
+.amt-preset {
+  padding: 9px 16px;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family:'Montserrat',sans-serif;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.amt-preset:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+.amt-preset.active { background: var(--cyan); border-color: var(--cyan); color: var(--white); }
+
+.preset-group { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.form-grid .full { grid-column: 1 / -1; }
+.form-group { margin-bottom: 0; }
+.form-group label {
+  display: block;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--navy);
+  margin-bottom: 5px;
+}
+.form-group label .req { color: #e53935; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family:'Open Sans',sans-serif;
+  color: var(--text-dark);
+  background: #f9fdff;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0,162,217,0.12);
+}
+.form-group textarea { min-height: 70px; resize: vertical; }
+
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 2px solid var(--border);
+}
+.total-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.total-label {
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--navy);
+}
+.total-val {
+  font-family:'Montserrat',sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--cyan);
+}
+.donate-btn-action {
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  border: none;
+  padding: 14px 36px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family:'Montserrat',sans-serif;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,162,217,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.donate-btn-action::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+.donate-btn-action:hover::before { left: 100%; }
+.donate-btn-action:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(0,162,217,0.35); }
+
+/* ===== LANDSCAPE LAYOUT ===== */
+.donate-wrap.landscape {
+  max-width: 1100px;
+}
+.donate-wrap.landscape .form-header {
+  padding: 16px 24px;
+}
+.donate-wrap.landscape .form-body {
+  padding: 16px 20px;
+}
+.donate-wrap.landscape .field-group {
+  margin-bottom: 12px;
+}
+.donate-wrap.landscape .top-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.donate-wrap.landscape .top-row .col {
+  flex: 1;
+  min-width: 180px;
+}
+.donate-wrap.landscape .cause-option {
+  min-width: 120px;
+  padding: 10px 8px;
+  font-size: 0.7rem;
+}
+.donate-wrap.landscape .cause-option i {
+  font-size: 1.2rem;
+}
+.donate-wrap.landscape .panel-desc {
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+.donate-wrap.landscape .panel-desc p {
+  font-size: 0.78rem;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.donate-wrap.landscape .form-grid {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+.donate-wrap.landscape .form-grid .full {
+  grid-column: 1 / -1;
+}
+.donate-wrap.landscape .form-group input,
+.donate-wrap.landscape .form-group textarea {
+  padding: 7px 10px;
+  font-size: 0.78rem;
+}
+.donate-wrap.landscape .form-group textarea {
+  min-height: 36px;
+}
+.donate-wrap.landscape .action-row {
+  margin-top: 12px;
+  padding-top: 12px;
+}
+.donate-wrap.landscape .donate-btn-action {
+  padding: 10px 24px;
+  font-size: 0.85rem;
+}
+@media(max-width:768px) {
+  .donate-wrap.landscape .top-row { flex-direction: column; }
+  .donate-wrap.landscape .top-row .col { min-width: 100%; }
+  .donate-wrap.landscape .form-grid { grid-template-columns: 1fr 1fr; }
+  .donate-wrap.landscape .cause-select { flex-wrap: wrap; }
+  .donate-wrap.landscape .amount-row { flex-wrap: wrap; }
+}
+@media (max-width: 600px) {
+  .form-body { padding: 20px 18px; }
+  .cause-option { min-width: 100%; }
+  .form-grid { grid-template-columns: 1fr; }
+  .action-row { flex-direction: column; align-items: stretch; }
+  .donate-btn-action { width: 100%; text-align: center; }
+  .amount-row { gap: 8px; }
+  .amount-box input { width: 80px; padding: 10px; font-size: 15px; }
+  .amount-box .rupee { padding: 10px; font-size: 15px; }
+  .amt-preset { padding: 8px 12px; font-size: 0.78rem; }
+  .preset-group { gap: 6px; }
+  .form-header { flex-direction: column; gap: 10px; text-align: center; }
+  .form-header-right { text-align: center; }
+}
+.name-error{display:none;color:#e53935;font-size:0.72rem;font-family:'Open Sans',sans-serif;margin-top:4px;background:#fff0f0;border:1px solid #fdd;border-radius:6px;padding:4px 10px;animation:popIn 0.3s ease}
+.name-error.show{display:inline-block}
+@keyframes popIn{0%{opacity:0;transform:translateY(-4px);}100%{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<div class="donate-wrap landscape">
+
+  <div class="form-header">
+    <div class="form-header-left">
+      <h2><i class="fas fa-hand-holding-heart"></i> Support Sevak Nivas</h2>
+      <p>Empowering visually impaired students with shelter, care & opportunities</p>
+    </div>
+    <div class="form-header-right">
+      <span class="badge-80g">80G TAX EXEMPTION</span>
+    </div>
+  </div>
+
+  <div class="form-body">
+
+    <div class="top-row">
+      <div class="col">
+        <div class="field-group">
+          <label>Frequency <span class="req">*</span></label>
+          <div class="freq-toggle">
+            <button class="freq-btn active" data-freq="once" onclick="setFrequency('once',this)">Just Once</button>
+            <button class="freq-btn" data-freq="monthly" onclick="setFrequency('monthly',this)">Give Monthly</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <label>Donation Amount <span class="req">*</span></label>
+          <div class="amount-row">
+            <div class="amount-box">
+              <span class="rupee">₹</span>
+              <input type="number" id="donationAmount" value="500" min="1" oninput="updateTotal()">
+            </div>
+            <div class="preset-group">
+              <button class="amt-preset" onclick="setAmount(100,this)">₹100</button>
+              <button class="amt-preset active" onclick="setAmount(500,this)">₹500</button>
+              <button class="amt-preset" onclick="setAmount(1000,this)">₹1,000</button>
+              <button class="amt-preset" onclick="setAmount(2000,this)">₹2,000</button>
+              <button class="amt-preset" onclick="setAmount(5000,this)">₹5,000</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cause Selection -->
+    <div class="field-group">
+      <label>Select Cause</label>
+      <div class="cause-select" id="causeSelect">
+        <div class="cause-option active" data-cause="Help, Support & Counseling Center" data-mission="Sevak Nivas - Counseling Center" onclick="selectCause(this)">
+          <i class="fas fa-hands-helping"></i>
+          Counseling Center
+          <span class="cause-price">₹1,50,000</span>
+        </div>
+        <div class="cause-option" data-cause="Vocational Training & Skill Development" data-mission="Sevak Nivas - Vocational Training" onclick="selectCause(this)">
+          <i class="fas fa-tools"></i>
+          Vocational Training
+          <span class="cause-price">₹3,00,000</span>
+        </div>
+        <div class="cause-option" data-cause="Library – Study and Explore" data-mission="Sevak Nivas - Library" onclick="selectCause(this)">
+          <i class="fas fa-book"></i>
+          Library
+          <span class="cause-price">₹2,00,000</span>
+        </div>
+        <div class="cause-option" data-cause="BPO & Employment Training" data-mission="Sevak Nivas - BPO Training" onclick="selectCause(this)">
+          <i class="fas fa-briefcase"></i>
+          BPO Training
+          <span class="cause-price">₹3,00,000</span>
+        </div>
+        <div class="cause-option" data-cause="Computer Training Lab" data-mission="Sevak Nivas - Computer Lab" onclick="selectCause(this)">
+          <i class="fas fa-laptop-code"></i>
+          Computer Lab
+          <span class="cause-price">₹5,00,000</span>
+        </div>
+        <div class="cause-option" data-cause="Communication & Personality Development" data-mission="Sevak Nivas - Personality Development" onclick="selectCause(this)">
+          <i class="fas fa-chart-line"></i>
+          Personality Dev.
+          <span class="cause-price">₹3,00,000</span>
+        </div>
+        <div class="cause-option" data-cause="Career Guidance & Placement" data-mission="Sevak Nivas - Career Guidance" onclick="selectCause(this)">
+          <i class="fas fa-graduation-cap"></i>
+          Career Guidance
+          <span class="cause-price">₹3,50,000</span>
+        </div>
+        <div class="cause-option" data-cause="AI & Digital Innovation Lab" data-mission="Sevak Nivas - AI Lab" onclick="selectCause(this)">
+          <i class="fas fa-robot"></i>
+          AI & Innovation
+          <span class="cause-price">₹4,00,000</span>
+        </div>
+        <div class="cause-option" data-cause="Physiotherapy & Wellness Room" data-mission="Sevak Nivas - Physiotherapy" onclick="selectCause(this)">
+          <i class="fas fa-heartbeat"></i>
+          Physiotherapy
+          <span class="cause-price">₹2,00,000</span>
+        </div>
+        <div class="cause-option" data-cause="Women Empowerment & Self Employment" data-mission="Sevak Nivas - Women Empowerment" onclick="selectCause(this)">
+          <i class="fas fa-female"></i>
+          Women Empowerment
+          <span class="cause-price">₹2,00,000</span>
+        </div>
+        <div class="cause-option" data-cause="Community Kitchen (Rasoi Ghar)" data-mission="Sevak Nivas - Community Kitchen" onclick="selectCause(this)">
+          <i class="fas fa-utensils"></i>
+          Community Kitchen
+          <span class="cause-price">₹3,00,000</span>
+        </div>
+        <div class="cause-option" data-cause="Sevak Nivas Accommodation" data-mission="Sevak Nivas - Accommodation" onclick="selectCause(this)">
+          <i class="fas fa-home"></i>
+          Sevak Nivas
+          <span class="cause-price">₹4,00,000</span>
+        </div>
+        <div class="cause-option" data-cause="General Support" data-mission="Sevak Nivas - General" onclick="selectCause(this)">
+          <i class="fas fa-heart"></i>
+          General Support
+          <span class="cause-price">Flexible</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description panel -->
+    <div class="panel-desc" id="panelDesc">
+      <h3><i class="fas fa-hands-helping"></i> Help, Support & Counseling Center</h3>
+      <p>Professional guidance, emotional support and counseling services for individuals in need. Your donation helps us provide professional counseling, emotional assistance, and rehabilitation services for visually impaired, disabled, and underprivileged individuals.</p>
+    </div>
+
+    <!-- Personal Details -->
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Full Name <span class="req">*</span></label>
+        <input type="text" id="donorName" placeholder="Your full name" oninput="validateName(this,'name-error')" />
+        <span class="name-error" id="name-error">Invalid name</span>
+      </div>
+      <div class="form-group">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" id="donorEmail" placeholder="" oninput="validateEmail(this,'email-error')" />
+        <span class="name-error" id="email-error">Invalid email</span>
+      </div>
+      <div class="form-group">
+        <label>Phone <span class="req">*</span></label>
+        <input type="tel" id="donorPhone" placeholder="" oninput="validatePhone(this,'phone-error')" />
+        <span class="name-error" id="phone-error">Phone number must contain 10 digits.</span>
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" id="donorAddress" placeholder="Your address">
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" id="donorCity" placeholder="City">
+      </div>
+      <div class="form-group full">
+        <label>Message (optional)</label>
+        <textarea id="donorMessage" placeholder="Leave a message of support..."></textarea>
+      </div>
+    </div>
+
+    <!-- Action -->
+    <div class="action-row">
+      <div class="total-box">
+        <span class="total-label">Total Donation:</span>
+        <span class="total-val">₹<span id="totalDisplay">500</span></span>
+      </div>
+      <button class="donate-btn-action" onclick="handleDonate()">
+        <i class="fas fa-lock"></i> Donate Now
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let currentFreq = 'once';
+let currentCause = 'Help, Support & Counseling Center';
+let currentMission = 'Sevak Nivas - Counseling Center';
+
+const causePrices = {
+  'Help, Support & Counseling Center': 150000,
+  'Vocational Training & Skill Development': 300000,
+  'Library – Study and Explore': 200000,
+  'BPO & Employment Training': 300000,
+  'Computer Training Lab': 500000,
+  'Communication & Personality Development': 300000,
+  'Career Guidance & Placement': 350000,
+  'AI & Digital Innovation Lab': 400000,
+  'Physiotherapy & Wellness Room': 200000,
+  'Women Empowerment & Self Employment': 200000,
+  'Community Kitchen (Rasoi Ghar)': 300000,
+  'Sevak Nivas Accommodation': 400000,
+  'General Support': 0
+};
+
+const causeDescriptions = {
+  'Help, Support & Counseling Center': 'Professional guidance, emotional support and counseling services for individuals in need.',
+  'Vocational Training & Skill Development': 'Vocational education, practical skill training, and career guidance for underserved communities.',
+  'Library – Study and Explore': 'Inclusive learning space with books, Braille resources, audio tools, and digital content.',
+  'BPO & Employment Training': 'Professional communication, computer, and workplace skills training for corporate employment.',
+  'Computer Training Lab': 'Digital education, computer skills, assistive technologies, and digital literacy programs.',
+  'Communication & Personality Development': 'Communication, leadership, confidence, and interpersonal skills training.',
+  'Career Guidance & Placement': 'Career counseling, job readiness training, placement support, and professional guidance.',
+  'AI & Digital Innovation Lab': 'Access to emerging technologies, AI, digital tools, and innovation-driven learning.',
+  'Physiotherapy & Wellness Room': 'Physiotherapy, rehabilitation support, and wellness services.',
+  'Women Empowerment & Self Employment': 'Skill development, entrepreneurship training, and livelihood opportunities for women.',
+  'Community Kitchen (Rasoi Ghar)': 'Freshly prepared nutritious meals for visually impaired individuals and needy families.',
+  'Sevak Nivas Accommodation': 'Safe, accessible, and comfortable temporary accommodation for visually impaired students.',
+  'General Support': 'Flexible support for Sevak Nivas where it is needed most.'
+};
+
+function setFrequency(freq, btn) {
+  currentFreq = freq;
+  document.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function selectCause(el) {
+  document.querySelectorAll('.cause-option').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentCause = el.dataset.cause;
+  currentMission = el.dataset.mission;
+  const price = causePrices[currentCause] || 0;
+  const desc = causeDescriptions[currentCause] || '';
+  let html = '<h3><i class="' + el.querySelector('i').className + '"></i> ' + currentCause + '</h3>' +
+    '<p>' + desc + '</p>';
+  if (price > 0) {
+    html += '<p style="margin-top:12px;font-weight:700;color:#074D97;">Target Amount: <span style="color:#009BD4;font-size:1.1rem;">₹' + price.toLocaleString('en-IN') + '</span></p>';
+  }
+  document.getElementById('panelDesc').innerHTML = html;
+}
+
+function setAmount(val, btn) {
+  document.getElementById('donationAmount').value = val;
+  document.querySelectorAll('.amt-preset').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateTotal();
+}
+
+function updateTotal() {
+  const val = document.getElementById('donationAmount').value || 0;
+  document.getElementById('totalDisplay').textContent = val;
+}
+
+document.getElementById('donationAmount').addEventListener('input', function() {
+  document.querySelectorAll('.amt-preset').forEach(b => b.classList.remove('active'));
+  updateTotal();
+});
+
+function handleDonate() {
+  const amount = document.getElementById('donationAmount').value;
+  const name = document.getElementById('donorName').value;
+  const email = document.getElementById('donorEmail').value;
+  const phone = document.getElementById('donorPhone').value;
+  const phoneErr = document.getElementById('phone-error');
+  if (!phone || phone.length !== 10) {
+    phoneErr.textContent = 'Phone number must contain 10 digits.';
+    phoneErr.classList.add('show');
+    clearTimeout(window._phoneErrTimer);
+    window._phoneErrTimer = setTimeout(() => phoneErr.classList.remove('show'), 3000);
+    return;
+  }
+  const desc = currentCause + ' | ' + currentFreq;
+
+  donateWithRazorpay({ amount, name, email, phone, description: desc, mission: currentMission });
+}
+
+let nameTimers = {};
+function validateName(el, errorId) {
+  const err = document.getElementById(errorId);
+  if (/[^a-zA-Z\s]/.test(el.value)) {
+    el.value = el.value.replace(/[^a-zA-Z\s]/g, '');
+    err.classList.add('show');
+    clearTimeout(nameTimers[errorId]);
+    nameTimers[errorId] = setTimeout(() => err.classList.remove('show'), 2000);
+  }
+}
+function validateEmail(el, errorId) {
+  const err = document.getElementById(errorId);
+  if (/[^a-zA-Z0-9@.]/.test(el.value)) {
+    el.value = el.value.replace(/[^a-zA-Z0-9@.]/g, '');
+    err.textContent = 'Invalid email';
+    err.classList.add('show');
+    clearTimeout(nameTimers[errorId]);
+    nameTimers[errorId] = setTimeout(() => err.classList.remove('show'), 2000);
+    return;
+  }
+  err.classList.remove('show');
+}
+function validatePhone(el, errorId) {
+  const err = document.getElementById(errorId);
+  if (/[^0-9]/.test(el.value)) {
+    el.value = el.value.replace(/[^0-9]/g, '');
+    return;
+  }
+  if (el.value.length > 10) {
+    el.value = el.value.slice(0, 10);
+    err.textContent = 'Phone number must contain 10 digits.';
+    err.classList.add('show');
+    clearTimeout(nameTimers[errorId]);
+    nameTimers[errorId] = setTimeout(() => err.classList.remove('show'), 2000);
+    return;
+  }
+  err.classList.remove('show');
+}
+function sendHeight() {
+    var h = document.body.scrollHeight;
+    parent.postMessage(h, '*');
+  }
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+</script>
+
+</body>
+</html>

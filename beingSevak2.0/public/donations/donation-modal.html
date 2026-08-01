@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Donate Modal – BSCT</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="../payment/razorpay.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy: #074D97;
+  --mid: #046FB1;
+  --cyan: #009BD4;
+  --cyan-light: #33bce8;
+  --green: #2eb85c;
+  --gold: #D4AF37;
+  --white: #fff;
+  --light-bg: #f4f7fb;
+  --text-dark: #1a1a2e;
+  --text-mid: #4a5568;
+  --border: #d0eaf5;
+}
+body { font-family:'Open Sans',sans-serif; background:var(--light-bg); display:flex; align-items:center; justify-content:center; min-height:100vh; padding:20px; }
+
+/* ── TRIGGER BUTTON (for demo) ── */
+.demo-trigger {
+  text-align: center;
+}
+.open-modal-btn {
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  border: none;
+  padding: 16px 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-family:'Montserrat',sans-serif;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,162,217,0.3);
+}
+.open-modal-btn:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,162,217,0.35); }
+
+/* ── OVERLAY ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(3,22,62,0.7);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+  animation: overlayIn 0.3s ease;
+}
+.modal-overlay.open { display: flex; }
+@keyframes overlayIn {
+  0% { opacity:0; }
+  100% { opacity:1; }
+}
+
+/* ── MODAL BOX ── */
+.modal-box {
+  background: var(--white);
+  border-radius: 24px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+  animation: modalIn 0.4s ease;
+  position: relative;
+}
+@keyframes modalIn {
+  0% { opacity:0; transform:scale(0.9) translateY(40px); }
+  100% { opacity:1; transform:scale(1) translateY(0); }
+}
+
+/* ── HEADER ── */
+.modal-header {
+  background: linear-gradient(to right, #009BD4 0%, #0285C3 25%, #046FB1 50%, #074D97 75%, #083D8B 100%);
+  padding: 24px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.modal-header::before {
+  content: '';
+  position: absolute;
+  top: -60%; left: -60%;
+  width: 220%; height: 220%;
+  background: radial-gradient(circle, rgba(0,162,217,0.12), transparent);
+  animation: spinGlow 10s linear infinite;
+}
+@keyframes spinGlow {
+  0% { transform:rotate(0deg); }
+  100% { transform:rotate(360deg); }
+}
+.modal-close {
+  position: absolute;
+  top: 14px; right: 18px;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: var(--white);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.3s;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close:hover { background: rgba(255,255,255,0.3); transform:rotate(90deg); }
+.modal-header h2 {
+  font-family:'Montserrat',sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  position: relative;
+  z-index: 1;
+}
+.modal-header p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.8);
+  margin-top: 6px;
+  position: relative;
+  z-index: 1;
+}
+.modal-header .badge {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--navy);
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.65rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── BODY ── */
+.modal-body { padding: 24px 28px 28px; }
+
+/* ── AMOUNT ── */
+.amt-label {
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.amt-label .req { color: #e53935; }
+
+.freq-toggle {
+  display: flex;
+  max-width: 340px;
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 4px;
+  border: 2px solid var(--border);
+  margin-bottom: 20px;
+}
+.freq-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.freq-btn.active {
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.freq-btn.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  animation: freqFlow 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes freqFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.amt-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.amt-box {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.amt-box:focus-within { border-color: var(--cyan); }
+.amt-box .rs {
+  padding: 9px 10px;
+  font-size: 14px;
+  color: var(--text-mid);
+  font-weight: 600;
+  border-right: 2px solid var(--border);
+  background: #eef8fc;
+}
+.amt-box input {
+  border: none; outline: none;
+  padding: 9px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  width: 90px;
+  background: transparent;
+  color: var(--navy);
+}
+.amt-preset {
+  padding: 8px 14px;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family:'Montserrat',sans-serif;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.amt-preset:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+.amt-preset.active { background: var(--cyan); border-color: var(--cyan); color: var(--white); }
+
+.preset-group { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* ── FORM ── */
+.modal-field { margin-bottom: 14px; }
+.modal-field label {
+  display: block;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 600;
+  font-size: 0.76rem;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.modal-field label .req { color: #e53935; }
+.modal-field input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family:'Open Sans',sans-serif;
+  color: var(--text-dark);
+  background: #f9fdff;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.modal-field input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0,162,217,0.12);
+}
+.modal-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-fields .full { grid-column: 1 / -1; }
+
+/* ── TOTAL ── */
+.modal-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  margin-top: 10px;
+  border-top: 2px solid var(--border);
+}
+.modal-total .t-label {
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--navy);
+}
+.modal-total .t-val {
+  font-family:'Montserrat',sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--cyan);
+}
+
+/* ── DONATE BTN ── */
+.modal-donate-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  border: none;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family:'Montserrat',sans-serif;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,162,217,0.3);
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.modal-donate-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+.modal-donate-btn:hover::before { left: 100%; }
+.modal-donate-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,162,217,0.35); }
+
+@media (max-width: 480px) {
+  .modal-fields { grid-template-columns: 1fr; }
+  .modal-body { padding: 18px 16px; }
+  .amt-row { gap: 6px; }
+  .amt-box input { width: 60px; padding: 8px; font-size: 13px; }
+  .amt-box .rs { padding: 8px; font-size: 13px; }
+  .amt-preset { padding: 6px 10px; font-size: 0.7rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- TRIGGER BUTTON (demo) -->
+<div class="demo-trigger">
+  <button class="open-modal-btn" onclick="openDonateModal()">
+    <i class="fas fa-hand-holding-heart"></i> Donate Now
+  </button>
+  <p style="margin-top:12px;color:var(--text-mid);font-size:0.85rem;">Click to open donation modal &mdash; embed this in any project page</p>
+</div>
+
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="donateModalOverlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeDonateModal()"><i class="fas fa-times"></i></button>
+      <h2>Make a Donation</h2>
+      <p>Your support transforms lives across India</p>
+      <span class="badge">80G TAX EXEMPTION</span>
+    </div>
+    <div class="modal-body">
+      <div class="amt-label">Select Amount <span class="req">*</span></div>
+      <div class="amt-row">
+        <div class="amt-box">
+          <span class="rs">₹</span>
+          <input type="number" id="modalAmt" value="1250" min="1" oninput="updateModalTotal()"/>
+        </div>
+        <div class="preset-group once-presets">
+          <button class="amt-preset active" onclick="setModalAmt(1250,this)">₹1,250</button>
+          <button class="amt-preset" onclick="setModalAmt(2500,this)">₹2,500</button>
+          <button class="amt-preset" onclick="setModalAmt(3750,this)">₹3,750</button>
+          <button class="amt-preset" onclick="setModalAmt(5000,this)">₹5,000</button>
+          <button class="amt-preset" onclick="setModalAmt(6250,this)">₹6,250</button>
+          <button class="amt-preset" onclick="setModalAmt(7500,this)">₹7,500</button>
+        </div>
+        <div class="preset-group monthly-presets" style="display:none">
+          <button class="amt-preset active" onclick="setModalAmt(500,this)">₹500</button>
+          <button class="amt-preset" onclick="setModalAmt(750,this)">₹750</button>
+          <button class="amt-preset" onclick="setModalAmt(1000,this)">₹1,000</button>
+          <button class="amt-preset" onclick="setModalAmt(1250,this)">₹1,250</button>
+          <button class="amt-preset" onclick="setModalAmt(1500,this)">₹1,500</button>
+        </div>
+      </div>
+
+      <div class="amt-label" style="margin-top:4px;">Frequency <span class="req">*</span></div>
+      <div class="freq-toggle" style="margin-bottom:18px;">
+        <button class="freq-btn active" onclick="selectFreq('once', this)">Just Once</button>
+        <button class="freq-btn" onclick="selectFreq('monthly', this)">Give Monthly</button>
+      </div>
+
+      <div class="modal-fields">
+        <div class="modal-field">
+          <label>First Name <span class="req">*</span></label>
+          <input type="text" id="modalFname" placeholder="First Name"/>
+        </div>
+        <div class="modal-field">
+          <label>Last Name</label>
+          <input type="text" id="modalLname" placeholder="Last Name"/>
+        </div>
+        <div class="modal-field full">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="modalEmail" placeholder="Email Address"/>
+        </div>
+        <div class="modal-field full">
+          <label>Phone <span class="req">*</span></label>
+          <input type="tel" id="modalPhone" placeholder="Phone Number"/>
+        </div>
+      </div>
+
+      <div class="modal-total">
+        <span class="t-label">Donation Total:</span>
+        <span class="t-val" id="modalTotal">₹1,000.00</span>
+      </div>
+
+      <button class="modal-donate-btn" onclick="handleModalDonate()">
+        <i class="fas fa-heart"></i> Donate Now
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openDonateModal() {
+  document.getElementById('donateModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDonateModal() {
+  document.getElementById('donateModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('donateModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeDonateModal();
+});
+
+let donationFreq = 'once';
+function selectFreq(val, btn) {
+  document.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  donationFreq = val;
+  document.querySelectorAll('.preset-group').forEach(g => g.style.display = 'none');
+  document.querySelector('.' + val + '-presets').style.display = 'flex';
+  const first = document.querySelector('.' + val + '-presets .amt-preset');
+  if (first) setModalAmt(parseInt(first.getAttribute('onclick').match(/\d+/)[0]), first);
+}
+
+function setModalAmt(val, btn) {
+  document.getElementById('modalAmt').value = val;
+  document.querySelectorAll('.amt-preset').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateModalTotal();
+}
+function updateModalTotal() {
+  const n = parseFloat(document.getElementById('modalAmt').value) || 0;
+  document.getElementById('modalTotal').textContent = '₹' + n.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function handleModalDonate() {
+  const amt = document.getElementById('modalAmt').value;
+  const name = document.getElementById('modalFname').value;
+  const email = document.getElementById('modalEmail').value;
+  const phone = document.getElementById('modalPhone').value;
+  donateWithRazorpay({
+    amount: amt,
+    name: name,
+    email: email,
+    phone: phone,
+    description: 'Donation - Modal',
+    mission: 'General'
+  });
+}
+</script>
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/918879035035?text=Hello%20Being%20Sevak%20Charitable%20Trust%2C%20I%20would%20like%20to%20know%20more." target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-logo">
+          <img src="../images/logo11.png" alt="Being Sevak Logo" class="footer-logo-img">
+          <img src="../images/bs.png" alt="Text Logo" class="BS-text-logo">
+        </div>
+        <p class="footer-desc"> Serving humanity with compassion, dignity, and hope — empowering lives through food,
+          education, healthcare, and community support</p>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/share/1P33YzE6HM/?mibextid=wwXIfr" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://www.instagram.com/beingsevak?igsh=MTRjam5nNjU4a2w1Mw==" target="_blank">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://youtube.com/@beingsevak?si=T_qcPUg699KmS8_2" target="_blank">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://www.linkedin.com/company/www-linkedin-cominshwetashah2658ba102/" target="_blank">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>About Us</h4>
+        <ul>
+          <li><a href="../about-bsct.html">About BSCT</a></li>
+          <li><a href="../management.html">Management</a></li>
+          <li><a href="../mission-vision.html">Mission / Vision</a></li>
+          <li><a href="../trust-documents.html">Trust Documents</a></li>
+          <li><a href="../where-we-work.html">Where We Work</a></li>
+          <li><a href="../awards.html">Awards / Achievements</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Our Projects</h4>
+        <ul>
+          <li><a href="../Mission Annapurna/Annapurna.html">Mission Annapurna</a></li>
+          <li><a href="../Mission Annapurna/Vidhya.html">Mission Vidhya</a></li>
+          <li><a href="../Mission Annapurna/aurat.html">Mission Aurat</a></li>
+          <li><a href="../Mission Annapurna/bezubaan.html">Mission Bezubaan</a></li>
+          <li><a href="../Mission Annapurna/atmanirbhar.html">Mission Atmanirbhar</a></li>
+          <li><a href="../Mission Annapurna/Wellness.html">Mission Arogya</a></li>
+          <li><a href="../Mission Annapurna/Niwas.html">Sevak Niwas Kendra</a></li>
+          <li><a href="../Mission Annapurna/beach.html">Mission Beach Sevak</a></li>
+          <li><a href="../Mission Annapurna/eco.html">Mission Eco-Warriors</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>GET INVOLVED</h4>
+        <ul>
+          <li><a href="../individual-donation/individual.html">Individual Donation</a></li>
+          <li> <a href="../careers.html">Volunteers(SEVAK BANO)</a></li>
+          <li><a href="../csr.html">CSR</a></li>
+          <li><a href="../school/school.html">School/Institute Collaboration</a></li>
+          <li><a href="../ngo-collaboration/ngo-ollaboratio.html">NGO Collaboration</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p><i class="fas fa-phone"></i>+91 8879035035</p>
+        <p><i class="fas fa-envelope"></i>being.sevak@gmail.com</p>
+        <p><i class="fas fa-map-marker-alt"></i> MUMBAI, INDIA</p>
+        <div class="footer-badges">
+          <a href="../brochure/BSCT E-Brochure.pdf" class="brochure-btn" download>
+            <i class="fas fa-file-pdf"></i> Brochure
+          </a>
+          <div class="footer-qr">
+            <img src="../images/Qrcode.jpeg" alt="Donation QR Code">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Copyright 2023 Being Sevak Charitable Trust. All rights reserved. Registered Charity No. E-31948</p>
+      <div class="footer-links">
+        <a href="../terms/terms.html">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

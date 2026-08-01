@@ -1,0 +1,258 @@
+/* ===== PROGRAMS PAGE ===== */
+.programs-page {
+  background: #eff3ff;
+  overflow-x: hidden;
+}
+
+/* ===== HERO ===== */
+.prog-hero {
+  position: relative;
+  padding: 120px 24px 80px;
+  overflow: hidden;
+  background: #eff3ff;
+}
+
+.prog-hero-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.prog-hero-shape--1 {
+  top: 10%;
+  right: -80px;
+  width: 400px;
+  height: 400px;
+  background: #4a6fa5;
+}
+
+.prog-hero-shape--2 {
+  bottom: 10%;
+  left: -80px;
+  width: 300px;
+  height: 300px;
+  background: #2e2c8a;
+  opacity: 0.15;
+}
+
+.prog-hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.prog-hero-badge {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  color: #2e2c8a;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.prog-hero-title {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 56px;
+  line-height: 1.1;
+  color: #2e2c8a;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.prog-hero-desc {
+  font-family: "Work Sans", "Segoe UI", sans-serif;
+  font-size: 18px;
+  color: #464651;
+  line-height: 1.7;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* ===== PROGRAMS GRID ===== */
+.prog-grid-section {
+  padding: 40px 24px 80px;
+}
+
+.prog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.prog-card {
+  text-decoration: none;
+  display: block;
+}
+
+.prog-card-offset {
+  transform: translateY(48px);
+}
+
+.prog-card-inner {
+  border-radius: 25px;
+  overflow: hidden;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(63, 64, 149, 0.08);
+  transition: transform 0.5s ease, box-shadow 0.4s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.prog-card-inner:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(63, 64, 149, 0.18);
+  border-color: rgba(46, 44, 138, 0.25);
+}
+
+.prog-card-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 25px;
+  margin-bottom: 16px;
+}
+
+.prog-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+  display: block;
+}
+
+.prog-card-inner:hover .prog-card-image img {
+  transform: scale(1.08);
+}
+
+.prog-card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(46, 44, 138, 0.15), transparent);
+  pointer-events: none;
+}
+
+.prog-card-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: rgba(46, 44, 138, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  margin-left: 4px;
+  transition: background 0.2s;
+}
+
+.prog-card-inner:hover .prog-card-icon-wrap {
+  background: rgba(46, 44, 138, 0.15);
+}
+
+.prog-card-icon-wrap .material-symbol {
+  font-size: 24px;
+  color: #2e2c8a;
+}
+
+.prog-card-body {
+  padding: 0 4px 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.prog-card-title {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2e2c8a;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.prog-card-desc {
+  font-size: 14px;
+  color: #464651;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.prog-card-tag {
+  display: inline-block;
+  background: rgba(74, 111, 165, 0.1);
+  color: #4a6fa5;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  width: fit-content;
+}
+
+/* ===== ANIMATION ===== */
+.prog-card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.prog-card.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.prog-card-offset.animate-in {
+  transform: translateY(48px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .prog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .prog-card-offset:nth-child(n+3) {
+    transform: translateY(0);
+  }
+
+  .prog-card-offset:nth-child(2) {
+    transform: translateY(48px);
+  }
+}
+
+@media (max-width: 768px) {
+  .prog-hero-title {
+    font-size: 36px;
+  }
+
+  .prog-hero {
+    padding: 100px 16px 60px;
+  }
+
+  .prog-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .prog-card-offset {
+    transform: translateY(0) !important;
+  }
+
+  .prog-card-image {
+    height: 180px;
+  }
+
+  .prog-grid-section {
+    padding: 24px 16px 60px;
+  }
+}

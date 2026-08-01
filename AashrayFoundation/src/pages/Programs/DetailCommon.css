@@ -1,0 +1,417 @@
+/* ===== DETAIL PAGE — Glass Morphism (Shared) ===== */
+
+/* ===== HERO ===== */
+.detail-hero {
+  height: 550px;
+  overflow: hidden;
+  background: var(--hero-img, #eff3ff) center/cover no-repeat;
+}
+
+.detail-hero-content,
+.detail-hero-shape,
+.detail-hero-badge {
+  display: none;
+}
+
+/* ===== SHARED TAGS ===== */
+.detail-section-tag {
+  display: inline-block;
+  color: #2e2c8a;
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+.detail-section-subtitle {
+  text-align: center;
+  color: #464651;
+  font-size: 16px;
+  margin-bottom: 48px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== INTRO ===== */
+.detail-intro {
+  padding: 40px 24px;
+}
+
+.detail-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.detail-intro-text h2 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 42px;
+  color: #2e2c8a;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.detail-intro-text p {
+  font-size: 16px;
+  line-height: 1.9;
+  color: #464651;
+  margin-bottom: 16px;
+}
+
+.detail-intro-text strong {
+  color: #2e2c8a;
+}
+
+.detail-quote {
+  font-style: italic;
+  color: #4a6fa5 !important;
+  font-weight: 600;
+  border-left: 4px solid #4a6fa5;
+  padding-left: 20px;
+  margin-top: 20px;
+}
+
+.detail-image-frame {
+  padding: 12px;
+  border-radius: 25px;
+  transition: border-color 0.3s ease;
+}
+
+.detail-image-frame img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 25px;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.detail-image-frame:hover {
+  border-color: rgba(46, 44, 138, 0.25);
+}
+
+.detail-image-frame:hover img {
+  transform: scale(1.03);
+}
+
+/* ===== MISSION ===== */
+.detail-mission {
+  padding: 60px 24px;
+}
+
+.detail-mission h2 {
+  text-align: center;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 42px;
+  color: #2e2c8a;
+  margin-bottom: 10px;
+}
+
+.detail-mission-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.detail-mission-card {
+  padding: 40px 35px;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(63, 64, 149, 0.08);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.detail-mission-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(63, 64, 149, 0.18);
+  border-color: rgba(46, 44, 138, 0.25);
+}
+
+.detail-mission-num {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #4a6fa5;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.detail-mission-card h3 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 20px;
+  color: #2e2c8a;
+  margin-bottom: 14px;
+}
+
+.detail-mission-card p {
+  line-height: 1.8;
+  color: #464651;
+  font-size: 14px;
+}
+
+/* ===== 2-col mission override ===== */
+.detail-mission-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* ===== 6-col mission override ===== */
+.detail-mission-grid-6 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* ===== IMPACT ===== */
+.detail-impact {
+  padding: 60px 24px;
+}
+
+.detail-impact-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.detail-impact-content h2 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 42px;
+  color: #2e2c8a;
+  margin-bottom: 24px;
+}
+
+.detail-impact-content p {
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.9;
+  color: #464651;
+  margin-bottom: 16px;
+}
+
+/* ===== STATS ===== */
+.detail-stats {
+  padding: 40px 24px;
+}
+
+.detail-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.detail-stat {
+  text-align: center;
+  padding: 32px 40px;
+  border-radius: 25px;
+  min-width: 180px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 25px rgba(63, 64, 149, 0.08);
+}
+
+.detail-stat:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(63, 64, 149, 0.15);
+  border-color: rgba(46, 44, 138, 0.25);
+}
+
+.detail-stat-number {
+  display: block;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 40px;
+  font-weight: 800;
+  color: #2e2c8a;
+  margin-bottom: 6px;
+}
+
+.detail-stat-label {
+  display: block;
+  font-size: 14px;
+  color: #464651;
+  font-weight: 600;
+}
+
+/* ===== GALLERY ===== */
+.detail-gallery {
+  padding: 60px 24px;
+}
+
+.detail-gallery h2 {
+  text-align: center;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 38px;
+  color: #2e2c8a;
+  margin-bottom: 10px;
+}
+
+.detail-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.detail-gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 25px;
+  cursor: pointer;
+  padding: 8px;
+  transition: border-color 0.3s ease;
+}
+
+.detail-gallery-item img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 25px;
+  transition: transform 0.5s ease;
+  display: block;
+}
+
+.detail-gallery-item:hover {
+  border-color: rgba(46, 44, 138, 0.25);
+}
+
+.detail-gallery-item:hover img {
+  transform: scale(1.06);
+}
+
+.detail-gallery-overlay {
+  position: absolute;
+  inset: 8px;
+  background: linear-gradient(to top, rgba(46, 44, 138, 0.75) 0%, transparent 60%);
+  border-radius: 25px;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.detail-gallery-item:hover .detail-gallery-overlay {
+  opacity: 1;
+}
+
+.detail-gallery-overlay span {
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* ===== CTA ===== */
+.detail-cta {
+  padding: 80px 24px;
+  text-align: center;
+  position: relative;
+  background: rgba(198, 219, 239, 0.3);
+}
+
+.detail-cta h2 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 38px;
+  color: #2e2c8a;
+  margin-bottom: 16px;
+}
+
+.detail-cta p {
+  font-size: 18px;
+  color: #464651;
+  margin-bottom: 36px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.detail-cta-btns {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #2e2c8a;
+  color: #fff;
+  padding: 16px 48px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+  box-shadow: 0 8px 30px rgba(46, 44, 138, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-primary-glass:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(46, 44, 138, 0.4);
+}
+
+.btn-primary-glass:active {
+  transform: scale(0.97);
+}
+
+.btn-secondary-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(198, 219, 239, 0.45);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #2e2c8a;
+  padding: 16px 48px;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.btn-secondary-glass:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== ANIMATIONS ===== */
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+section {
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .detail-intro-grid { grid-template-columns: 1fr; gap: 40px; }
+  .detail-image-frame img { height: 300px; }
+  .detail-mission-grid-6 { grid-template-columns: 1fr 1fr; }
+  .detail-gallery-grid { grid-template-columns: 1fr 1fr; }
+  .detail-stats-grid { gap: 20px; }
+  .detail-intro-text h2,
+  .detail-mission h2,
+  .detail-impact-content h2,
+  .detail-gallery h2 { font-size: 32px; }
+}
+
+@media (max-width: 768px) {
+  .detail-mission-grid { grid-template-columns: 1fr; }
+  .detail-mission-grid-2 { grid-template-columns: 1fr; }
+  .detail-mission-grid-6 { grid-template-columns: 1fr; }
+  .detail-gallery-grid { grid-template-columns: 1fr; }
+  .detail-cta h2 { font-size: 28px; }
+  .detail-cta { padding: 60px 16px; }
+  .btn-primary-glass,
+  .btn-secondary-glass {
+    padding: 14px 32px;
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,6 @@
+@import "./DetailCommon.css";
+
+.medical-page {
+  background: #eff3ff;
+  overflow-x: hidden;
+}

@@ -1,0 +1,347 @@
+/* ===== ABOUT PAGE ===== */
+.page-about {
+  background: #eff3ff;
+  overflow-x: hidden;
+}
+
+/* ===== HERO ===== */
+.about-hero {
+  position: relative;
+  padding: 140px 24px 80px;
+  overflow: hidden;
+  background: #eff3ff;
+}
+
+.about-hero-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.about-hero-shape--1 {
+  top: 10%;
+  right: -80px;
+  width: 400px;
+  height: 400px;
+  background: #4a6fa5;
+}
+
+.about-hero-shape--2 {
+  bottom: 10%;
+  left: -80px;
+  width: 300px;
+  height: 300px;
+  background: #2e2c8a;
+  opacity: 0.15;
+}
+
+.about-hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.about-hero-badge {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  color: #2e2c8a;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.about-hero-content h1 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 56px;
+  line-height: 1.1;
+  color: #2e2c8a;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.about-hero-content p {
+  font-family: "Work Sans", "Segoe UI", sans-serif;
+  font-size: 18px;
+  color: #464651;
+  line-height: 1.7;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* ===== MISSION ===== */
+.about-mission {
+  padding: 60px 24px;
+}
+
+.about-mission-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-mission-content h2 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 42px;
+  color: #2e2c8a;
+  margin-bottom: 20px;
+}
+
+.about-mission-content p {
+  font-size: 16px;
+  line-height: 1.9;
+  color: #464651;
+}
+
+/* ===== TEAM ===== */
+.about-team {
+  padding: 40px 24px 80px;
+}
+
+.about-team h2 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 42px;
+  color: #2e2c8a;
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.about-team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 28px;
+}
+
+.about-team-card {
+  border-radius: 25px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(63, 64, 149, 0.08);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.about-team-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(63, 64, 149, 0.18);
+}
+
+.about-team-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(46, 44, 138, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2e2c8a;
+  margin: 0 auto 20px;
+}
+
+.about-team-card h3 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 18px;
+  color: #2e2c8a;
+  margin-bottom: 4px;
+}
+
+.about-team-role {
+  display: block;
+  font-size: 13px;
+  color: #4a6fa5;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.about-team-card p {
+  font-size: 14px;
+  color: #464651;
+  line-height: 1.7;
+}
+
+/* ===== INTRO ===== */
+.about-intro {
+  padding: 40px 24px 60px;
+}
+
+.about-intro-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-intro-content p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: #464651;
+  margin-bottom: 20px;
+}
+
+/* ===== SECTORS ===== */
+.about-sectors {
+  padding: 60px 24px 80px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.about-sectors h2 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 42px;
+  color: #2e2c8a;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.about-sectors-subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: #464651;
+  margin-bottom: 48px;
+}
+
+.about-sectors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.about-sector-card {
+  padding: 32px 16px;
+  border-radius: 24px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.about-sector-card:hover {
+  transform: translateY(-6px);
+}
+
+.about-sector-card .material-symbol {
+  font-size: 40px;
+  color: #2e2c8a;
+  margin-bottom: 16px;
+}
+
+.about-sector-card h3 {
+  font-size: 14px;
+  color: #2e2c8a;
+  font-weight: 700;
+}
+
+/* ===== MISSION & VISION ===== */
+.about-mv {
+  padding: 80px 24px;
+}
+
+.about-mv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.about-mv-card {
+  padding: 48px;
+  border-radius: 40px;
+}
+
+.about-mv-card-offset {
+  transform: translateY(48px);
+}
+
+.about-mv-card h2 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 32px;
+  margin-bottom: 24px;
+  color: #fff;
+}
+
+.about-mv-card p {
+  font-size: 17px;
+  line-height: 1.7;
+  opacity: 0.9;
+  color: #fff;
+}
+
+/* ===== FOUNDER ===== */
+.about-founder {
+  padding: 60px 24px 100px;
+}
+
+.about-founder-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 64px;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.about-founder-image {
+  position: relative;
+}
+
+.about-founder-frame {
+  padding: 12px;
+  border-radius: 32px;
+  transform: rotate(-2deg);
+  transition: transform 0.5s ease;
+}
+
+.about-founder-frame:hover {
+  transform: rotate(0deg);
+}
+
+.about-founder-frame img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 24px;
+  display: block;
+}
+
+.about-founder-tag {
+  color: #4a6fa5;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.about-founder-text h2 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 38px;
+  color: #2e2c8a;
+  margin-bottom: 24px;
+}
+
+.about-founder-text p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #464651;
+  margin-bottom: 20px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .about-hero { padding: 120px 16px 60px; }
+  .about-hero-content h1 { font-size: 36px; }
+  .about-hero-content p { font-size: 15px; }
+  .about-mission-content h2,
+  .about-team h2 { font-size: 32px; }
+  .about-team { padding: 30px 16px 60px; }
+  .about-mission { padding: 40px 16px; }
+}

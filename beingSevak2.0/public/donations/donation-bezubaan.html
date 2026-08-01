@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mission Bezubaan – Donate | BSCT</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="../payment/razorpay.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy: #074D97;
+  --mid: #046FB1;
+  --cyan: #009BD4;
+  --cyan-light: #33bce8;
+  --green: #2eb85c;
+  --gold: #D4AF37;
+  --white: #fff;
+  --light-bg: #f4f7fb;
+  --text-dark: #1a1a2e;
+  --text-mid: #4a5568;
+  --border: #d0eaf5;
+}
+body { font-family:'Open Sans',sans-serif; background:var(--light-bg); color:var(--text-dark); padding:20px; }
+
+.donate-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+  overflow: hidden;
+  animation: formIn 0.6s ease;
+}
+@keyframes formIn {
+  0% { opacity:0; transform:translateY(30px) scale(0.97); }
+  100% { opacity:1; transform:translateY(0) scale(1); }
+}
+
+.form-header {
+  background: linear-gradient(to right, #009BD4 0%, #0285C3 25%, #046FB1 50%, #074D97 75%, #083D8B 100%);
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.form-header::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(0,162,217,0.15), transparent);
+  animation: shine 8s linear infinite;
+}
+@keyframes shine {
+  0% { transform:rotate(0deg); }
+  100% { transform:rotate(360deg); }
+}
+.form-header-left { position: relative; z-index: 1; }
+.form-header-left h2 {
+  font-family:'Montserrat',sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--white);
+}
+.form-header-left p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.75);
+  margin-top: 4px;
+}
+.form-header-right {
+  text-align: right;
+  position: relative;
+  z-index: 1;
+}
+.form-header-right .badge-80g {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--navy);
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
+  padding: 5px 16px;
+  border-radius: 20px;
+}
+
+.form-body { padding: 28px 32px 32px; }
+
+.field-group { margin-bottom: 22px; }
+.field-group label {
+  display: block;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.field-group label .req { color: #e53935; }
+
+.freq-toggle {
+  display: flex;
+  max-width: 340px;
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 4px;
+  border: 2px solid var(--border);
+  margin-bottom: 22px;
+}
+.freq-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.freq-btn.active {
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.freq-btn.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  animation: freqFlow 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes freqFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.bezu-tabs {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.bezu-tab {
+  padding: 20px 34px;
+  min-width: 160px;
+  border: 2px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+  font-family:'Montserrat',sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.bezu-tab i { margin-right: 8px; font-size: 1rem; color: var(--cyan); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.bezu-tab:hover { border-color: var(--cyan); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,162,217,0.18); }
+.bezu-tab.active { border-color: var(--cyan); background: linear-gradient(135deg, var(--cyan), var(--mid)); color: var(--white); box-shadow: 0 6px 20px rgba(0,162,217,0.35); transform: translateY(-2px); }
+.bezu-tab.active i { color: var(--white); }
+.bezu-tab.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  animation: waterFlow 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes waterFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.bezu-panel { display: none; }
+.bezu-panel.active { display: block; animation: panelSlide 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes panelSlide {
+  0% { opacity: 0; transform: translateY(30px) scale(0.97); clip-path: inset(0 0 20px 0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); clip-path: inset(0 0 0 0); }
+}
+.bezu-panel.active .bezu-desc h3 {
+  animation: fadeUpItem 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+.bezu-panel.active .bezu-desc p {
+  animation: fadeUpItem 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+.bezu-panel.active .bezu-impact span {
+  animation: fadeUpItem 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+.bezu-panel.active .bezu-impact span:nth-child(2) { animation-delay: 0.35s; }
+.bezu-panel.active .bezu-impact span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes fadeUpItem {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.bezu-desc {
+  background: #f0f8ff;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 22px;
+}
+.bezu-desc h3 {
+  font-family:'Montserrat',sans-serif;
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.bezu-desc h3 i { color: var(--cyan); margin-right: 8px; }
+.bezu-desc p {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.bezu-impact {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.bezu-impact span {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  color: var(--text-mid);
+}
+.bezu-impact span strong { color: var(--cyan); }
+
+.amount-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.amount-box {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f9fdff;
+  transition: border-color 0.3s;
+}
+.amount-box:focus-within { border-color: var(--cyan); }
+.amount-box .rupee {
+  padding: 14px 16px;
+  font-size: 18px;
+  color: var(--text-mid);
+  font-weight: 600;
+  border-right: 2px solid var(--border);
+  background: #eef8fc;
+}
+.amount-box input {
+  border: none; outline: none;
+  padding: 14px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  width: 150px;
+  background: transparent;
+  color: var(--navy);
+}
+.amt-preset {
+  padding: 12px 22px;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family:'Montserrat',sans-serif;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.amt-preset:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+.amt-preset.active { background: var(--cyan); border-color: var(--cyan); color: var(--white); }
+
+.preset-group { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.form-grid .full { grid-column: 1 / -1; }
+.form-group { margin-bottom: 0; }
+.form-group label {
+  display: block;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--navy);
+  margin-bottom: 5px;
+}
+.form-group label .req { color: #e53935; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family:'Open Sans',sans-serif;
+  color: var(--text-dark);
+  background: #f9fdff;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0,162,217,0.12);
+}
+.form-group textarea { min-height: 70px; resize: vertical; }
+
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 2px solid var(--border);
+}
+.total-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.total-label {
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--navy);
+}
+.total-val {
+  font-family:'Montserrat',sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--cyan);
+}
+.donate-btn-bezu {
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  border: none;
+  padding: 14px 36px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family:'Montserrat',sans-serif;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,162,217,0.3);
+  position: relative;
+  overflow: hidden;
+}
+.donate-btn-bezu::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+.donate-btn-bezu:hover::before { left: 100%; }
+.donate-btn-bezu:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(0,162,217,0.35); }
+
+@media (max-width: 600px) {
+  .form-body { padding: 20px 18px; }
+  .bezu-tab { width: 100%; justify-content: center; }
+  .form-grid { grid-template-columns: 1fr; }
+  .action-row { flex-direction: column; align-items: stretch; }
+  .donate-btn-bezu { width: 100%; text-align: center; }
+  .amount-row { gap: 8px; }
+  .amount-box input { width: 80px; padding: 10px; font-size: 15px; }
+  .amount-box .rupee { padding: 10px; font-size: 15px; }
+  .amt-preset { padding: 8px 12px; font-size: 0.78rem; }
+  .preset-group { gap: 6px; }
+  .bezu-impact { flex-direction: column; gap: 8px; }
+  .bezu-impact span { width: 100%; text-align: center; padding: 8px 10px; font-size: 0.75rem; }
+}
+
+/* ── DISTRIBUTION TYPE SECTION ── */
+.dist-section {
+  padding: 20px 24px 10px;
+  background: #f8fcff;
+  border-bottom: 2px solid var(--border);
+}
+.dist-section-head {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.dist-section-head h3 {
+  font-family:'Montserrat',sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.dist-section-head p {
+  font-size: 0.82rem;
+  color: var(--text-mid);
+}
+
+/* ── LANDSCAPE ── */
+.donate-wrap.landscape{max-width:1100px;}
+.donate-wrap.landscape .form-header{padding:16px 24px;}
+.donate-wrap.landscape .form-body{padding:16px 20px;}
+.donate-wrap.landscape .field-group{margin-bottom:12px;}
+.donate-wrap.landscape .top-row{display:flex;gap:16px;flex-wrap:wrap;}
+.donate-wrap.landscape .top-row .col{flex:1;min-width:180px;}
+.donate-wrap.landscape .bezu-tab{padding:14px 24px;font-size:0.78rem;}
+.donate-wrap.landscape .bezu-tab i{font-size:0.95rem;margin-right:6px;}
+.donate-wrap.landscape .freq-toggle{margin-bottom:0;}
+.donate-wrap.landscape .freq-btn{padding:8px 14px;font-size:0.75rem ; height: 7vh;}
+.donate-wrap.landscape .amount-row{flex-wrap:nowrap;}
+.donate-wrap.landscape .amt-preset{padding:8px 14px;font-size:0.85rem;}
+.donate-wrap.landscape .bezu-desc{padding:10px 14px;margin-bottom:10px;}
+.donate-wrap.landscape .bezu-desc p{font-size:0.78rem;margin-bottom:6px;line-height:1.4;}
+.donate-wrap.landscape .form-grid{grid-template-columns:1fr 1fr 1fr 1fr 1fr;}
+.donate-wrap.landscape .form-grid .full{grid-column:auto;}
+.donate-wrap.landscape .form-group input,.donate-wrap.landscape .form-group textarea{padding:7px 10px;font-size:0.78rem;}
+.donate-wrap.landscape .form-group textarea{min-height:36px;}
+.donate-wrap.landscape .action-row{margin-top:12px;padding-top:12px;}
+.donate-wrap.landscape .donate-btn-bezu{padding:10px 24px;font-size:0.85rem;}
+@media(max-width:768px){
+  .donate-wrap.landscape .top-row{flex-direction:column;}
+  .donate-wrap.landscape .top-row .col{min-width:100%;}
+  .donate-wrap.landscape .form-grid{grid-template-columns:1fr 1fr;}
+  .donate-wrap.landscape .bezu-tabs{flex-wrap:wrap;}
+  .donate-wrap.landscape .amount-row{flex-wrap:wrap;}
+}
+.name-error {
+  display: none;
+  color: #e53935;
+  font-size: 0.72rem;
+  font-family: 'Open Sans', sans-serif;
+  margin-top: 4px;
+  background: #fff0f0;
+  border: 1px solid #fdd;
+  border-radius: 6px;
+  padding: 4px 10px;
+  animation: popIn 0.3s ease;
+}
+.name-error.show { display: inline-block; }
+@keyframes popIn {
+  0% { opacity: 0; transform: translateY(-4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="donate-wrap landscape">
+  <div class="form-header">
+    <div class="form-header-left">
+      <h2><i class="fas fa-paw"></i> Mission Bezubaan</h2>
+      <p>Your contribution helps make a difference</p>
+    </div>
+    <div class="form-header-right">
+      <span class="badge-80g">80G TAX EXEMPTION</span>
+    </div>
+  </div>
+  <div class="dist-section">
+    <div class="dist-section-head">
+      <!-- <h3>Choose Distribution Type</h3>
+      <p>Select the type of distribution you want to support</p>
+    </div> -->
+    <div class="bezu-tabs" id="bezuTabs">
+      <button class="bezu-tab active" data-bezu="feeding" onclick="selectBezu(this)">
+        <i class="fas fa-utensils"></i> Animal Feeding Centre
+      </button>
+      <button class="bezu-tab" data-bezu="biscuit" onclick="selectBezu(this)">
+        <i class="fas fa-cookie-bite"></i> Meal Distribution
+      </button>
+      <button class="bezu-tab" data-bezu="medical" onclick="selectBezu(this)">
+        <i class="fas fa-notes-medical"></i> Medical Care Support
+      </button>
+      <button class="bezu-tab" data-bezu="rescue" onclick="selectBezu(this)">
+        <i class="fas fa-hand-holding-heart"></i> Rescue & Shelter
+      </button>
+    </div>
+  </div>
+  <div class="form-body">
+
+    <div class="top-row">
+      <div class="col">
+        <div class="field-group">
+          <label>Frequency <span class="req">*</span></label>
+          <div class="freq-toggle">
+            <button class="freq-btn active" onclick="selectFreq('once', this)">Just Once</button>
+            <button class="freq-btn" onclick="selectFreq('monthly', this)">Give Monthly</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="field-group">
+          <label>Donation Amount <span class="req">*</span></label>
+          <div class="amount-row">
+            <div class="amount-box">
+              <span class="rupee">₹</span>
+              <input type="number" id="donateAmount" value="1250" min="1" oninput="updateTotal()"/>
+            </div>
+            <div class="preset-group once-presets">
+              <button class="amt-preset active" onclick="setAmt(1250,this)">₹1,250</button>
+              <button class="amt-preset" onclick="setAmt(2500,this)">₹2,500</button>
+              <button class="amt-preset" onclick="setAmt(3750,this)">₹3,750</button>
+              <button class="amt-preset" onclick="setAmt(5000,this)">₹5,000</button>
+              <button class="amt-preset" onclick="setAmt(6250,this)">₹6,250</button>
+              <button class="amt-preset" onclick="setAmt(7500,this)">₹7,500</button>
+            </div>
+            <div class="preset-group monthly-presets" style="display:none">
+              <button class="amt-preset active" onclick="setAmt(500,this)">₹500</button>
+              <button class="amt-preset" onclick="setAmt(750,this)">₹750</button>
+              <button class="amt-preset" onclick="setAmt(1000,this)">₹1,000</button>
+              <button class="amt-preset" onclick="setAmt(1250,this)">₹1,250</button>
+              <button class="amt-preset" onclick="setAmt(1500,this)">₹1,500</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Animal Feeding Centre -->
+    <div class="bezu-panel active" id="panel-feeding">
+      <div class="bezu-desc">
+        <h3><i class="fas fa-utensils"></i> Animal Feeding Centre</h3>
+        <p>Support our dedicated feeding centres that provide nutritious meals to stray dogs, cats, and other street animals every day. Each feeding session ensures that no animal sleeps hungry. We prepare wholesome food and distribute it across multiple feeding points in slums, market areas, and residential colonies.</p>
+        <div class="bezu-impact">
+          <span><strong>₹500</strong> feeds animals for a week</span>
+          <span><strong>₹2,000</strong> supports a feeding centre for a month</span>
+          <span><strong>₹10,000</strong> sustains a centre for 6 months</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Biscuit Milk Pedigree -->
+    <div class="bezu-panel" id="panel-biscuit">
+      <div class="bezu-desc">
+        <h3><i class="fas fa-cookie-bite"></i> Biscuit Milk Pedigree Distribution</h3>
+        <p>Distribute nutritious biscuits, milk packets, and premium pedigree dog food to stray animals on the streets. This programme ensures animals get balanced nutrition even in harsh weather conditions. Our teams regularly patrol identified zones to reach hungry animals with these essential food supplies.</p>
+        <div class="bezu-impact">
+          <span><strong>₹300</strong> provides food for 10 animals</span>
+          <span><strong>₹1,500</strong> covers a full distribution drive</span>
+          <span><strong>₹5,000</strong> supports a month of regular feeding</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Medical Care Support -->
+    <div class="bezu-panel" id="panel-medical">
+      <div class="bezu-desc">
+        <h3><i class="fas fa-notes-medical"></i> Medical Care Support</h3>
+        <p>Provide emergency medical treatment, vaccinations, and sterilisation for injured and sick street animals. Our network of volunteer veterinarians helps treat wounds, mange, infections, and performs critical surgeries. We also run anti-rabies vaccination drives to protect both animals and communities.</p>
+        <div class="bezu-impact">
+          <span><strong>₹1,000</strong> covers basic treatment for one animal</span>
+          <span><strong>₹5,000</strong> funds a vaccination camp</span>
+          <span><strong>₹15,000</strong> supports emergency surgery</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rescue & Shelter -->
+    <div class="bezu-panel" id="panel-rescue">
+      <div class="bezu-desc">
+        <h3><i class="fas fa-hand-holding-heart"></i> Rescue & Shelter</h3>
+        <p>Help us rescue abandoned, injured, and orphaned animals and provide them with a safe shelter. Our rescue team responds to distress calls and brings animals to temporary shelters where they receive care, warmth, and love until they recover or find a forever home.</p>
+        <div class="bezu-impact">
+          <span><strong>₹2,000</strong> supports a rescue operation</span>
+          <span><strong>₹8,000</strong> provides shelter for a month</span>
+          <span><strong>₹25,000</strong> builds a permanent shelter space</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>First Name <span class="req">*</span></label>
+        <input type="text" id="fname" placeholder="First Name" oninput="validateName(this,'fname-error')"/>
+        <span class="name-error" id="fname-error">Invalid name</span>
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" id="lname" placeholder="Last Name" oninput="validateName(this,'lname-error')"/>
+        <span class="name-error" id="lname-error">Invalid name</span>
+      </div>
+      <div class="form-group">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="Email Address" oninput="validateEmail(this,'email-error')"/>
+        <span class="name-error" id="email-error">Invalid email</span>
+      </div>
+      <div class="form-group">
+        <label>Phone <span class="req">*</span></label>
+        <input type="tel" id="phone" placeholder="Phone Number" oninput="validatePhone(this,'phone-error')"/>
+        <span class="name-error" id="phone-error">Phone number must contain 10 digits.</span>
+      </div>
+      <div class="form-group full">
+        <label>Message (optional)</label>
+        <textarea id="message" placeholder="Leave a message..." maxlength="100" oninput="validateMsg(this)"></textarea>
+        <span class="name-error" id="msg-error">Only 100 characters accept</span>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <div class="total-box">
+        <span class="total-label">Donation Total:</span>
+        <span class="total-val" id="totalDisplay">₹1,250.00</span>
+      </div>
+      <button class="donate-btn-bezu" onclick="handleDonate()">
+        <i class="fas fa-heart"></i> Donate Now
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+let nameTimers = {};
+function validateName(el, errorId) {
+  const err = document.getElementById(errorId);
+  if (/[^a-zA-Z\s]/.test(el.value)) {
+    el.value = el.value.replace(/[^a-zA-Z\s]/g, '');
+    err.classList.add('show');
+    clearTimeout(nameTimers[errorId]);
+    nameTimers[errorId] = setTimeout(() => err.classList.remove('show'), 2000);
+  }
+}
+function validateEmail(el, errorId) {
+  const err = document.getElementById(errorId);
+  if (/[^a-zA-Z0-9@.]/.test(el.value)) {
+    el.value = el.value.replace(/[^a-zA-Z0-9@.]/g, '');
+    err.textContent = 'Invalid email';
+    err.classList.add('show');
+    clearTimeout(nameTimers[errorId]);
+    nameTimers[errorId] = setTimeout(() => err.classList.remove('show'), 2000);
+    return;
+  }
+  err.classList.remove('show');
+}
+function validatePhone(el, errorId) {
+  const err = document.getElementById(errorId);
+  if (/[^0-9]/.test(el.value)) {
+    el.value = el.value.replace(/[^0-9]/g, '');
+    return;
+  }
+  if (el.value.length > 10) {
+    el.value = el.value.slice(0, 10);
+    err.textContent = 'Phone number must contain 10 digits.';
+    err.classList.add('show');
+    clearTimeout(nameTimers[errorId]);
+    nameTimers[errorId] = setTimeout(() => err.classList.remove('show'), 2000);
+    return;
+  }
+  err.classList.remove('show');
+}
+function validateMsg(el) {
+  const err = document.getElementById('msg-error');
+  if (el.value.length >= 100) {
+    err.classList.add('show');
+    clearTimeout(nameTimers['msg-error']);
+    nameTimers['msg-error'] = setTimeout(() => err.classList.remove('show'), 2000);
+  } else {
+    err.classList.remove('show');
+  }
+}
+function selectBezu(el) {
+  document.querySelectorAll('.bezu-tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.bezu-panel').forEach(p => {
+    p.classList.remove('active');
+    void p.offsetHeight;
+  });
+  document.getElementById('panel-' + el.dataset.bezu).classList.add('active');
+}
+
+let donationFreq = 'once';
+function selectFreq(val, btn) {
+  document.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  donationFreq = val;
+  document.querySelectorAll('.preset-group').forEach(g => g.style.display = 'none');
+  document.querySelector('.' + val + '-presets').style.display = 'flex';
+  const first = document.querySelector('.' + val + '-presets .amt-preset');
+  if (first) setAmt(parseInt(first.getAttribute('onclick').match(/\d+/)[0]), first);
+}
+
+function setAmt(val, btn) {
+  document.getElementById('donateAmount').value = val;
+  document.querySelectorAll('.amt-preset').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateTotal();
+}
+
+function updateTotal() {
+  const n = parseFloat(document.getElementById('donateAmount').value) || 0;
+  document.getElementById('totalDisplay').textContent = '₹' + n.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function handleDonate() {
+  const amt = document.getElementById('donateAmount').value;
+  const name = document.getElementById('fname').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const phoneErr = document.getElementById('phone-error');
+  if (!phone || phone.length !== 10) {
+    phoneErr.textContent = 'Phone number must contain 10 digits.';
+    phoneErr.classList.add('show');
+    clearTimeout(window._phoneErrTimer);
+    window._phoneErrTimer = setTimeout(() => phoneErr.classList.remove('show'), 3000);
+    return;
+  }
+  const activeTab = document.querySelector('.bezu-tab.active');
+  const programme = activeTab ? activeTab.textContent.trim() : 'General Donation';
+  donateWithRazorpay({
+    amount: amt,
+    name: name,
+    email: email,
+    phone: phone,
+    description: 'Donation - Bezubaan - ' + programme,
+    mission: 'Bezubaan'
+  });
+}
+</script>
+<!-- WhatsApp Floating Button -->
+<!-- <a href="https://wa.me/918879035035?text=Hello%20Being%20Sevak%20Charitable%20Trust%2C%20I%20would%20like%20to%20know%20more." target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a> -->
+<script>
+(function() {
+  function sendHeight() {
+    var h = document.documentElement.scrollHeight;
+    parent.postMessage(h, '*');
+  }
+  window.addEventListener('load', function() { setTimeout(sendHeight, 300); });
+  window.addEventListener('resize', function() { setTimeout(sendHeight, 200); });
+})();
+</script>
+  
+</body>
+</html>

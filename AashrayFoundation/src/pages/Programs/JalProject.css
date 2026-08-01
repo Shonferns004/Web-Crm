@@ -1,0 +1,6 @@
+@import "./DetailCommon.css";
+
+.jal-page {
+  background: #eff3ff;
+  overflow-x: hidden;
+}

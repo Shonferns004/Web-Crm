@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Payment Failed | Being Sevak</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Open Sans',sans-serif;background:#f4f7fb;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px;}
+.fail-card{max-width:500px;width:100%;background:#fff;border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,0.08);overflow:hidden;text-align:center;animation:slideIn 0.6s ease;}
+@keyframes slideIn{0%{opacity:0;transform:translateY(30px);}100%{opacity:1;transform:translateY(0);}}
+.fail-header{background:linear-gradient(135deg,#e53935,#c62828);padding:30px;color:#fff;}
+.fail-header i{font-size:50px;margin-bottom:15px;display:block;}
+.fail-header h2{font-family:'Montserrat',sans-serif;font-size:1.5rem;font-weight:800;}
+.fail-header p{font-size:0.85rem;opacity:0.85;margin-top:6px;}
+.fail-body{padding:30px;}
+.error-box{background:#fff0f0;border:2px solid #fdd;border-radius:12px;padding:14px;margin-bottom:20px;word-break:break-all;}
+.error-box label{font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.75rem;color:#e53935;display:block;margin-bottom:4px;}
+.error-box span{font-size:0.9rem;color:#1a1a2e;font-weight:600;}
+.msg{font-size:0.9rem;color:#4a5568;line-height:1.8;margin-bottom:24px;}
+.retry-btn{display:inline-block;padding:14px 36px;background:linear-gradient(135deg,#e53935,#c62828);color:#fff;text-decoration:none;border-radius:50px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.95rem;transition:0.3s;box-shadow:0 8px 25px rgba(229,57,53,0.3);margin-right:10px;}
+.retry-btn:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(229,57,53,0.35);}
+.back-btn{display:inline-block;padding:14px 36px;background:#f4f7fb;color:#315270;text-decoration:none;border-radius:50px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:0.95rem;transition:0.3s;border:2px solid #d0eaf5;}
+.back-btn:hover{transform:translateY(-3px);}
+@media(max-width:600px){.fail-card{border-radius:16px;}.fail-header{padding:24px;}.fail-header h2{font-size:1.2rem;}.fail-body{padding:20px;}}
+</style>
+</head>
+<body>
+<div class="fail-card">
+  <div class="fail-header">
+    <i class="fas fa-times-circle"></i>
+    <h2>Payment Failed</h2>
+    <p>Something went wrong</p>
+  </div>
+  <div class="fail-body">
+    <div class="error-box">
+      <label>ERROR</label>
+      <span id="errorMsg">Payment could not be processed</span>
+    </div>
+    <p class="msg">Don't worry, no amount has been deducted. Please try again or use a different payment method.</p>
+    <a href="javascript:history.back()" class="retry-btn"><i class="fas fa-redo"></i> Retry</a>
+    <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
+  </div>
+</div>
+<script>
+var params = new URLSearchParams(window.location.search);
+document.getElementById('errorMsg').textContent = params.get('error') || 'Payment could not be processed';
+</script>
+</body>
+</html>

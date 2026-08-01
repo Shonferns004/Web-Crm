@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Stepped Donation – BSCT</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="../payment/razorpay.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --navy: #074D97;
+  --mid: #046FB1;
+  --cyan: #009BD4;
+  --cyan-light: #33bce8;
+  --green: #2eb85c;
+  --gold: #D4AF37;
+  --white: #fff;
+  --light-bg: #f4f7fb;
+  --text-dark: #1a1a2e;
+  --text-mid: #4a5568;
+  --border: #d0eaf5;
+}
+body { font-family:'Open Sans',sans-serif; background:var(--light-bg); padding:20px; display:flex; align-items:center; justify-content:center; min-height:100vh; }
+
+/* ── CONTAINER ── */
+.step-container {
+  max-width: 640px;
+  width: 100%;
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+  overflow: hidden;
+  animation: fadeUp 0.5s ease;
+}
+@keyframes fadeUp {
+  0% { opacity:0; transform:translateY(30px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+
+/* ── HEADER ── */
+.step-header {
+  background: linear-gradient(to right, #009BD4 0%, #0285C3 25%, #046FB1 50%, #074D97 75%, #083D8B 100%);
+  padding: 24px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.step-header::before {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(0,162,217,0.12), transparent);
+  top: -100px; right: -100px;
+  border-radius: 50%;
+}
+.step-header h2 {
+  font-family:'Montserrat',sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  position: relative;
+  z-index: 1;
+}
+.step-header p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.78);
+  margin-top: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── STEP INDICATOR ── */
+.steps-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px 28px 0;
+}
+.step-dot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.step-dot .circle {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  background: #e8edf2;
+  color: var(--text-mid);
+  transition: all 0.4s ease;
+  position: relative;
+}
+.step-dot .circle.active {
+  background: var(--cyan);
+  color: var(--white);
+  box-shadow: 0 0 0 4px rgba(0,162,217,0.2);
+}
+.step-dot .circle.done {
+  background: var(--green);
+  color: var(--white);
+}
+.step-dot .circle.done::after {
+  content: '\f00c';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  font-size: 0.7rem;
+}
+.step-dot .line {
+  width: 40px; height: 3px;
+  background: #e8edf2;
+  border-radius: 2px;
+  transition: background 0.4s;
+}
+.step-dot .line.done { background: var(--green); }
+
+/* ── STEPS ── */
+.step-panel { display: none; padding: 24px 28px; animation: stepSlide 0.4s ease; }
+.step-panel.active { display: block; }
+@keyframes stepSlide {
+  0% { opacity:0; transform:translateX(20px); }
+  100% { opacity:1; transform:translateX(0); }
+}
+
+/* ── FORM ELEMENTS ── */
+.s-label {
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.s-label .req { color: #e53935; }
+
+.freq-toggle {
+  display: flex;
+  max-width: 340px;
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 4px;
+  border: 2px solid var(--border);
+  margin-bottom: 20px;
+}
+.freq-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  font-family:'Montserrat',sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.freq-btn.active {
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.freq-btn.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  animation: freqFlow 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes freqFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+.s-amt-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.s-amt-box {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.s-amt-box:focus-within { border-color: var(--cyan); }
+.s-amt-box .rs {
+  padding: 10px 11px;
+  font-size: 14px;
+  color: var(--text-mid);
+  font-weight: 600;
+  border-right: 2px solid var(--border);
+  background: #eef8fc;
+}
+.s-amt-box input {
+  border: none; outline: none;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  width: 100px;
+  background: transparent;
+  color: var(--navy);
+}
+.s-preset {
+  padding: 9px 16px;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  background: var(--white);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family:'Montserrat',sans-serif;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.s-preset:hover { border-color: var(--cyan); color: var(--cyan); }
+.s-preset.active { background: var(--cyan); border-color: var(--cyan); color: var(--white); }
+
+.preset-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* ── STEP 3: REVIEW ── */
+.review-box {
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+.review-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.review-row:last-child { border-bottom: none; }
+.review-row .r-label { color: var(--text-mid); font-weight: 600; }
+.review-row .r-val { color: var(--text-dark); font-weight: 700; font-family:'Montserrat',sans-serif; }
+
+@media (max-width: 520px) {
+  .step-panel { padding: 18px 16px; }
+  .s-row { grid-template-columns: 1fr; }
+  .steps-bar { padding: 14px 16px 0; }
+  .step-dot .line { width: 24px; }
+  .s-amt-row { gap: 6px; }
+  .s-amt-box input { width: 65px; padding: 8px; font-size: 13px; }
+  .s-amt-box .rs { padding: 8px; font-size: 13px; }
+  .s-preset { padding: 6px 10px; font-size: 0.7rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="step-container">
+  <div class="step-header">
+    <h2><i class="fas fa-hand-holding-heart"></i> Complete Your Donation</h2>
+    <p>Three simple steps to make a difference</p>
+  </div>
+
+  <!-- STEPS BAR -->
+  <div class="steps-bar" id="stepsBar">
+    <div class="step-dot"><div class="circle active" id="sDot1">1</div><div class="line" id="sLine1"></div></div>
+    <div class="step-dot"><div class="circle" id="sDot2">2</div><div class="line" id="sLine2"></div></div>
+    <div class="step-dot"><div class="circle" id="sDot3">3</div></div>
+  </div>
+
+  <!-- STEP 1: AMOUNT -->
+  <div class="step-panel active" id="step1">
+    <div class="s-label">Select Amount <span class="req">*</span></div>
+    <div class="s-amt-row">
+      <div class="s-amt-box">
+        <span class="rs">₹</span>
+        <input type="number" id="sAmt" value="1250" min="1" oninput="updateSReview()"/>
+      </div>
+      <div class="preset-group once-presets">
+        <button class="s-preset active" onclick="setSAmt(1250,this)">₹1,250</button>
+        <button class="s-preset" onclick="setSAmt(2500,this)">₹2,500</button>
+        <button class="s-preset" onclick="setSAmt(3750,this)">₹3,750</button>
+        <button class="s-preset" onclick="setSAmt(5000,this)">₹5,000</button>
+        <button class="s-preset" onclick="setSAmt(6250,this)">₹6,250</button>
+        <button class="s-preset" onclick="setSAmt(7500,this)">₹7,500</button>
+      </div>
+      <div class="preset-group monthly-presets" style="display:none">
+        <button class="s-preset active" onclick="setSAmt(500,this)">₹500</button>
+        <button class="s-preset" onclick="setSAmt(750,this)">₹750</button>
+        <button class="s-preset" onclick="setSAmt(1000,this)">₹1,000</button>
+        <button class="s-preset" onclick="setSAmt(1250,this)">₹1,250</button>
+        <button class="s-preset" onclick="setSAmt(1500,this)">₹1,500</button>
+      </div>
+    </div>
+
+    <div class="s-label" style="margin-top:4px;">Frequency <span class="req">*</span></div>
+    <div class="freq-toggle" style="margin-bottom:18px;">
+      <button class="freq-btn active" onclick="selectFreq('once', this)">Just Once</button>
+      <button class="freq-btn" onclick="selectFreq('monthly', this)">Give Monthly</button>
+    </div>
+
+    <div class="s-label">Choose Mission</div>
+    <div class="s-field">
+      <select id="sMission" onchange="updateSReview()">
+        <option value="Annapurna">Mission Annapurna – Nutrition</option>
+        <option value="Vidhya">Mission Vidhya – Education</option>
+        <option value="Aurat">Mission Aurat – Women Empowerment</option>
+        <option value="Atmanirbhar">Mission Atmanirbhar – Livelihood</option>
+        <option value="General">General Donation</option>
+      </select>
+    </div>
+
+    <div class="s-nav">
+      <div></div>
+      <button class="s-btn s-btn-next" onclick="goStep(2)">Next <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- STEP 2: INFO -->
+  <div class="step-panel" id="step2">
+    <div class="s-row">
+      <div class="s-field">
+        <label>First Name <span class="req">*</span></label>
+        <input type="text" id="sFname" placeholder="First Name" oninput="updateSReview()"/>
+      </div>
+      <div class="s-field">
+        <label>Last Name</label>
+        <input type="text" id="sLname" placeholder="Last Name" oninput="updateSReview()"/>
+      </div>
+    </div>
+    <div class="s-field">
+      <label>Email <span class="req">*</span></label>
+      <input type="email" id="sEmail" placeholder="Email Address" oninput="updateSReview()"/>
+    </div>
+    <div class="s-field">
+      <label>Phone <span class="req">*</span></label>
+      <input type="tel" id="sPhone" placeholder="Phone Number" oninput="updateSReview()"/>
+    </div>
+    <div class="s-field">
+      <label>Message (optional)</label>
+      <textarea id="sMessage" placeholder="Leave a message..." oninput="updateSReview()"></textarea>
+    </div>
+
+    <div class="s-nav">
+      <button class="s-btn s-btn-prev" onclick="goStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
+      <button class="s-btn s-btn-next" onclick="goStep(3)">Review <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- STEP 3: REVIEW -->
+  <div class="step-panel" id="step3">
+    <div class="s-label" style="margin-bottom:12px;">Review Your Donation</div>
+    <div class="review-box">
+      <div class="review-row"><span class="r-label">Amount</span><span class="r-val" id="rAmt">₹1,000.00</span></div>
+      <div class="review-row"><span class="r-label">Mission</span><span class="r-val" id="rMission">Annapurna</span></div>
+      <div class="review-row"><span class="r-label">Name</span><span class="r-val" id="rName">—</span></div>
+      <div class="review-row"><span class="r-label">Email</span><span class="r-val" id="rEmail">—</span></div>
+      <div class="review-row"><span class="r-label">Phone</span><span class="r-val" id="rPhone">—</span></div>
+      <div class="review-row" style="border-bottom:none;"><span class="r-label">Message</span><span class="r-val" id="rMsg" style="font-weight:400;">—</span></div>
+    </div>
+
+    <div class="s-nav">
+      <button class="s-btn s-btn-prev" onclick="goStep(2)"><i class="fas fa-arrow-left"></i> Edit</button>
+      <button class="s-btn s-btn-submit" onclick="handleStepSubmit()">
+        <i class="fas fa-heart"></i> Confirm Donation
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentStep = 1;
+function goStep(n) {
+  if (n < 1 || n > 3) return;
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+
+  [1,2,3].forEach(i => {
+    const dot = document.getElementById('sDot' + i);
+    dot.classList.remove('active', 'done');
+    if (i < n) dot.classList.add('done');
+    else if (i === n) dot.classList.add('active');
+    if (i < 3) {
+      const line = document.getElementById('sLine' + i);
+      line.classList.toggle('done', i < n);
+    }
+  });
+  currentStep = n;
+  updateSReview();
+}
+
+let donationFreq = 'once';
+function selectFreq(val, btn) {
+  document.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  donationFreq = val;
+  document.querySelectorAll('.preset-group').forEach(g => g.style.display = 'none');
+  document.querySelector('.' + val + '-presets').style.display = 'flex';
+  const first = document.querySelector('.' + val + '-presets .s-preset');
+  if (first) setSAmt(parseInt(first.getAttribute('onclick').match(/\d+/)[0]), first);
+}
+
+function setSAmt(val, btn) {
+  document.getElementById('sAmt').value = val;
+  document.querySelectorAll('.s-preset').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateSReview();
+}
+function updateSReview() {
+  const amt = parseFloat(document.getElementById('sAmt').value) || 0;
+  document.getElementById('rAmt').textContent = '₹' + amt.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const mission = document.getElementById('sMission');
+  document.getElementById('rMission').textContent = mission.options[mission.selectedIndex].text;
+  const f = document.getElementById('sFname').value.trim();
+  const l = document.getElementById('sLname').value.trim();
+  document.getElementById('rName').textContent = f + (l ? ' ' + l : '') || '—';
+  document.getElementById('rEmail').textContent = document.getElementById('sEmail').value.trim() || '—';
+  document.getElementById('rPhone').textContent = document.getElementById('sPhone').value.trim() || '—';
+  document.getElementById('rMsg').textContent = document.getElementById('sMessage').value.trim() || '—';
+}
+
+function handleStepSubmit() {
+  const amt = document.getElementById('sAmt').value;
+  const name = document.getElementById('sFname').value.trim();
+  const email = document.getElementById('sEmail').value.trim();
+  const phone = document.getElementById('sPhone').value.trim();
+  donateWithRazorpay({
+    amount: amt,
+    name: name,
+    email: email,
+    phone: phone,
+    description: 'Donation - Stepped',
+    mission: 'General'
+  });
+}
+</script>
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/918879035035?text=Hello%20Being%20Sevak%20Charitable%20Trust%2C%20I%20would%20like%20to%20know%20more." target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-logo">
+          <img src="../images/logo11.png" alt="Being Sevak Logo" class="footer-logo-img">
+          <img src="../images/bs.png" alt="Text Logo" class="BS-text-logo">
+        </div>
+        <p class="footer-desc"> Serving humanity with compassion, dignity, and hope — empowering lives through food,
+          education, healthcare, and community support</p>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/share/1P33YzE6HM/?mibextid=wwXIfr" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://www.instagram.com/beingsevak?igsh=MTRjam5nNjU4a2w1Mw==" target="_blank">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://youtube.com/@beingsevak?si=T_qcPUg699KmS8_2" target="_blank">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="https://www.linkedin.com/company/www-linkedin-cominshwetashah2658ba102/" target="_blank">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>About Us</h4>
+        <ul>
+          <li><a href="../about-bsct.html">About BSCT</a></li>
+          <li><a href="../management.html">Management</a></li>
+          <li><a href="../mission-vision.html">Mission / Vision</a></li>
+          <li><a href="../trust-documents.html">Trust Documents</a></li>
+          <li><a href="../where-we-work.html">Where We Work</a></li>
+          <li><a href="../awards.html">Awards / Achievements</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Our Projects</h4>
+        <ul>
+          <li><a href="../Mission Annapurna/Annapurna.html">Mission Annapurna</a></li>
+          <li><a href="../Mission Annapurna/Vidhya.html">Mission Vidhya</a></li>
+          <li><a href="../Mission Annapurna/aurat.html">Mission Aurat</a></li>
+          <li><a href="../Mission Annapurna/bezubaan.html">Mission Bezubaan</a></li>
+          <li><a href="../Mission Annapurna/atmanirbhar.html">Mission Atmanirbhar</a></li>
+          <li><a href="../Mission Annapurna/Wellness.html">Mission Arogya</a></li>
+          <li><a href="../Mission Annapurna/Niwas.html">Sevak Niwas Kendra</a></li>
+          <li><a href="../Mission Annapurna/beach.html">Mission Beach Sevak</a></li>
+          <li><a href="../Mission Annapurna/eco.html">Mission Eco-Warriors</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>GET INVOLVED</h4>
+        <ul>
+          <li><a href="../individual-donation/individual.html">Individual Donation</a></li>
+          <li> <a href="../careers.html">Volunteers(SEVAK BANO)</a></li>
+          <li><a href="../csr.html">CSR</a></li>
+          <li><a href="../school/school.html">School/Institute Collaboration</a></li>
+          <li><a href="../ngo-collaboration/ngo-ollaboratio.html">NGO Collaboration</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p><i class="fas fa-phone"></i>+91 8879035035</p>
+        <p><i class="fas fa-envelope"></i>being.sevak@gmail.com</p>
+        <p><i class="fas fa-map-marker-alt"></i> MUMBAI, INDIA</p>
+        <div class="footer-badges">
+          <a href="../brochure/BSCT E-Brochure.pdf" class="brochure-btn" download>
+            <i class="fas fa-file-pdf"></i> Brochure
+          </a>
+          <div class="footer-qr">
+            <img src="../images/Qrcode.jpeg" alt="Donation QR Code">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Copyright 2023 Being Sevak Charitable Trust. All rights reserved. Registered Charity No. E-31948</p>
+      <div class="footer-links">
+        <a href="../terms/terms.html">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

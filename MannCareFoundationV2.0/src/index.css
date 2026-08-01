@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* =============================================
+   MANN CARE FOUNDATION – Theme
+   White + Pink + Baby Pink (original palette)
+   ============================================= */
+@theme {
+  --color-pink-brand: #e91e8c;
+  --color-pink-mid: #f472b6;
+  --color-pink-light: #fce7f3;
+  --color-pink-pale: #fdf2f8;
+  --color-baby-pink: #fbcfe8;
+  --color-rose-brand: #f9a8d4;
+  --color-off-white: #fefcfe;
+  --color-ink: #1a0a14;
+  --color-ink-mid: #4a1535;
+  --color-ink-soft: #8b5775;
+  --color-border-pink: #f3d0e7;
+
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+
+  --shadow-pink-sm: 0 4px 16px rgba(233, 30, 140, 0.10);
+  --shadow-pink-md: 0 8px 32px rgba(233, 30, 140, 0.15);
+  --shadow-pink-lg: 0 20px 60px rgba(233, 30, 140, 0.20);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-off-white);
+  color: var(--color-ink);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-pink-pale); }
+::-webkit-scrollbar-thumb { background: var(--color-pink-brand); border-radius: 3px; }
+::selection { background: var(--color-pink-brand); color: #fff; }
+
+/* Gradient text used across the site */
+.gradient-text {
+  background: linear-gradient(135deg, #e91e8c, #f472b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Navbar gradient background (original) */
+.nav-gradient {
+  background: linear-gradient(90deg, #ffffff 0%, #fdf2f8 25%, #fce7f3 50%, #fdf2f8 75%, #ffffff 100%);
+}
+
+/* Floating particles */
+@keyframes floatP {
+  0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+  10%  { opacity: 0.3; }
+  90%  { opacity: 0.2; }
+  100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+}
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.25;
+  animation: floatP linear infinite;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* Activities marquee */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

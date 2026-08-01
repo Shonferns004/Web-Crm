@@ -1,0 +1,351 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:    #03163E;
+  --mid:     #315371;
+  --cyan:    #00A2D9;
+  --cyan-light: #33bce8;
+  --green:   #2eb85c;
+  --gold:    #D4AF37;
+  --white:   #ffffff;
+  --light-bg:#f4f7fb;
+  --text-dark:#1a1a2e;
+  --text-mid: #4a5568;
+}
+
+body { font-family: 'Open Sans', sans-serif; color: var(--text-dark); overflow-x: hidden; }
+
+/* ─── TAX BOX HEADING (matches Annapurna page style) ─── */
+.tax-box{
+  width:100%;
+  height:70px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  background: linear-gradient(to right, #009BD4 0%, #0285C3 25%, #046FB1 50%, #074D97 75%, #083D8B 100%);
+  color:#fff;
+  border-radius:0px;
+  margin:20px 0;
+  padding:10px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.15);
+  position:relative;
+  overflow:hidden;
+  transition:0.4s ease;
+}
+.tax-box::before{
+  content:"";
+  position:absolute;
+  width:200%;
+  height:200%;
+  background:radial-gradient(circle,rgba(255,255,255,0.15),transparent);
+  top:-50%;
+  left:-50%;
+  animation:shine 6s linear infinite;
+}
+@keyframes shine{
+  0%{transform:rotate(0deg);}
+  100%{transform:rotate(360deg);}
+}
+.tax-box h1{
+  font-size:1.4rem;
+  font-weight:700;
+  line-height:1.6;
+  font-family:'Montserrat',sans-serif;
+  position:relative;
+  z-index:2;
+}
+.tax-box:hover{
+  transform:translateY(-5px) scale(1.01);
+  box-shadow:0 25px 60px rgba(0,163,218,0.35);
+}
+
+/* ─── CONTAINER ─── */
+.contact-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+/* ─── CONTACT GRID ─── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+/* ─── CONTACT INFO CARDS ─── */
+.contact-info h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.contact-info > p {
+  color: var(--text-mid);
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+  line-height: 1.7;
+}
+
+.info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--white);
+  border: 1px solid #e2ecf5;
+  border-radius: 16px;
+  padding: 20px 22px;
+  margin-bottom: 16px;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  border-color: var(--cyan);
+  background: #00a3da;
+}
+.info-card:hover h4,
+.info-card:hover p,
+.info-card:hover a,
+.info-card:hover strong,
+.info-card:hover .visit-item p { color: #fff; }
+.info-card:hover .icon-box { transform: scale(1.1) rotate(-5deg); }
+.info-card .icon-box {
+  width: 50px; height: 50px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  color: var(--white);
+  flex-shrink: 0;
+  transition: transform 0.4s ease;
+}
+.info-card:hover .icon-box {
+  transform: scale(1.1) rotate(-5deg);
+}
+.info-card h4 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+.info-card p, .info-card a {
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+  text-decoration: none;
+}
+.info-card a:hover { color: var(--cyan); }
+
+/* ─── VISIT US ACCORDION ─── */
+.visit-card .icon-box { align-self: flex-start; margin-top: 4px; }
+.visit-accordion { margin-top: 6px; }
+.visit-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #eef4f8;
+}
+.visit-item:last-child { border-bottom: none; }
+.visit-item strong {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+.visit-item p {
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ─── SOCIAL ─── */
+.social-section {
+  margin-top: 30px;
+}
+.social-section h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+.social-links {
+  display: flex;
+  gap: 12px;
+}
+.social-links a {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--light-bg);
+  border: 1px solid #e2ecf5;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.15rem;
+  color: var(--mid);
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.social-links a:hover {
+  background: var(--cyan);
+  color: var(--white);
+  border-color: var(--cyan);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,162,217,0.25);
+}
+
+/* ─── CONTACT FORM ─── */
+.contact-form-wrap {
+  background: var(--white);
+  border: 1px solid #e2ecf5;
+  border-radius: 20px;
+  padding: 36px 32px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+  transition: box-shadow 0.4s ease;
+}
+.contact-form-wrap:hover {
+  box-shadow: 0 16px 50px rgba(0,0,0,0.08);
+}
+.contact-form-wrap h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.contact-form-wrap > p {
+  font-size: 0.88rem;
+  color: var(--text-mid);
+  margin-bottom: 24px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+.form-group label {
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.form-group label .req { color: #e53935; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2ecf5;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-family: 'Open Sans', sans-serif;
+  color: var(--text-dark);
+  background: #fafcfe;
+  outline: none;
+  transition: all 0.3s ease;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(0,162,217,0.1);
+  background: var(--white);
+}
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, var(--cyan), var(--mid));
+  color: var(--white);
+  border: none;
+  padding: 14px 36px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  box-shadow: 0 8px 25px rgba(0,162,217,0.3);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: 0.5s;
+}
+.submit-btn:hover::before { left: 100%; }
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(0,162,217,0.35);
+}
+.submit-btn:active {
+  transform: translateY(-1px);
+}
+
+/* ─── MAP SECTION ─── */
+.map-section {
+  background: var(--light-bg);
+  padding: 60px 24px;
+}
+.map-section .section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--navy);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.map-section .section-label::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--gold);
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+.map-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+}
+.map-wrap iframe {
+  width: 100%;
+  height: 400px;
+  display: block;
+  border: none;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .page-hero h1 { font-size: 1.8rem; }
+  .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+  .form-row { grid-template-columns: 1fr; }
+  .contact-form-wrap { padding: 24px 18px; }
+  .map-wrap iframe { height: 280px; }
+}
+
+@media (max-width: 480px) {
+  .page-hero { padding: 80px 18px 40px; }
+  .page-hero h1 { font-size: 1.4rem; }
+  .contact-container { padding: 40px 18px; }
+}

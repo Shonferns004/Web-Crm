@@ -1,0 +1,218 @@
+@import "../Programs/DetailCommon.css";
+
+/* ===== VOLUNTEER PAGE ===== */
+.volunteer-page {
+  background: #eff3ff;
+}
+
+.volunteer-hero {
+  background: linear-gradient(135deg, #eff3ff 0%, #d4e0f0 100%);
+}
+
+/* ===== BENEFITS ===== */
+.volunteer-benefit-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(46, 44, 138, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.volunteer-benefit-icon .material-symbol {
+  font-size: 28px;
+  color: #2e2c8a;
+}
+
+.detail-mission-card:hover .volunteer-benefit-icon {
+  background: rgba(46, 44, 138, 0.15);
+}
+
+/* ===== OPPORTUNITIES ===== */
+.volunteer-opportunities {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.volunteer-opp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.volunteer-opp-card {
+  padding: 28px;
+  border-radius: 24px;
+  transition: transform 0.3s ease;
+}
+
+.volunteer-opp-card:hover {
+  transform: translateY(-6px);
+}
+
+.volunteer-opp-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.volunteer-opp-header h3 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 18px;
+  color: #2e2c8a;
+}
+
+.volunteer-opp-type {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #4a6fa5;
+  background: rgba(74, 111, 165, 0.1);
+  padding: 4px 12px;
+  border-radius: 9999px;
+}
+
+.volunteer-opp-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #4a6fa5;
+  margin-bottom: 12px;
+}
+
+.volunteer-opp-location .material-symbol {
+  font-size: 16px;
+  color: #4a6fa5;
+}
+
+.volunteer-opp-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #464651;
+}
+
+/* ===== FORM ===== */
+.volunteer-form-section {
+  padding: 60px 24px 80px;
+}
+
+.volunteer-form-card {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 48px;
+  border-radius: 40px;
+}
+
+.volunteer-form-card h2 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 36px;
+  color: #2e2c8a;
+  margin-bottom: 12px;
+}
+
+.volunteer-form-card > p {
+  color: #464651;
+  margin-bottom: 32px;
+}
+
+.volunteer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.volunteer-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.volunteer-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.volunteer-form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2e2c8a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.volunteer-form-group input,
+.volunteer-form-group select,
+.volunteer-form-group textarea {
+  padding: 12px 16px;
+  border: 2px solid rgba(198, 219, 239, 0.8);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.7);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.volunteer-form-group input:focus,
+.volunteer-form-group select:focus,
+.volunteer-form-group textarea:focus {
+  border-color: #2e2c8a;
+}
+
+.volunteer-form-card .btn-primary-glass {
+  align-self: flex-start;
+}
+
+/* ===== SUCCESS ===== */
+.volunteer-form-success {
+  text-align: center;
+  padding: 48px 0;
+}
+
+.volunteer-form-success .material-symbol {
+  font-size: 64px;
+  color: #2e7d32;
+  margin-bottom: 16px;
+}
+
+.volunteer-form-success h3 {
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  font-size: 28px;
+  color: #2e2c8a;
+  margin-bottom: 12px;
+}
+
+.volunteer-form-success p {
+  color: #464651;
+  font-size: 16px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .volunteer-opp-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .volunteer-opp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .volunteer-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .volunteer-form-card {
+    padding: 32px 24px;
+  }
+}

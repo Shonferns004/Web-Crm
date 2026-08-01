@@ -1,0 +1,19 @@
+AppealsMedical.jsx:48 Uncaught ReferenceError: index is not defined
+    at MedicalSupport (AppealsMedical.jsx:48:40)
+
+AppealsMedical.jsx:48 Uncaught ReferenceError: index is not defined
+    at MedicalSupport (AppealsMedical.jsx:48:40)
+chunk-XPR23Y44.js?v=6f35a461:14030 The above error occurred in the <MedicalSupport> component:
+
+    at MedicalSupport (http://localhost:5173/src/pages/Appeals/AppealsMedical.jsx?t=1781156615639:76:15)
+    at RenderedRoute (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=6f35a461:4120:5)
+    at Routes (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=6f35a461:4590:5)
+    at AppRoutes
+    at Router (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=6f35a461:4533:15)
+    at BrowserRouter (http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=6f35a461:5271:5)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+chunk-XPR23Y44.js?v=6f35a461:19411 Uncaught ReferenceError: index is not defined
+    at MedicalSupport (AppealsMedical.jsx:48:40)

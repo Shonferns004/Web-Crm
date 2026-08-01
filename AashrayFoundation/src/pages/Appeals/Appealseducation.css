@@ -1,0 +1,211 @@
+.education-page {
+  background: #f8fafc;
+}
+
+/* HERO */
+.education-hero {
+  width: 90%;
+  max-width: 1300px;
+  height: 550px;
+  margin: 40px auto;
+
+  border-radius: 80px 0 80px 0;
+  overflow: hidden;
+
+  background:
+    linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)),
+    url("/images/education/banner.jpg");
+
+  background-size: cover;
+  background-position: center;
+
+  display: flex;
+  align-items: center;
+}
+
+.education-overlay {
+  color: white;
+  max-width: 650px;
+  padding: 60px;
+}
+
+.education-overlay h4 {
+  color: #ffd166;
+  margin-bottom: 15px;
+}
+
+.education-overlay h1 {
+  font-size: 55px;
+  margin-bottom: 20px;
+}
+
+.education-overlay p {
+  line-height: 1.8;
+  font-size: 18px;
+}
+
+/* ABOUT */
+.education-about {
+  width: 90%;
+  max-width: 1200px;
+  margin: 60px auto;
+
+  background: white;
+  padding: 50px;
+
+  border-radius: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.education-about h2 {
+  margin-bottom: 20px;
+  font-size: 38px;
+}
+
+.education-about p {
+  line-height: 1.9;
+}
+
+/* MISSION */
+.education-mission {
+  width: 90%;
+  max-width: 1200px;
+  margin: 60px auto;
+}
+
+.education-mission h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 40px;
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 25px;
+}
+
+.mission-box {
+  background: white;
+  padding: 35px;
+  border-radius: 35px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.mission-box h3 {
+  margin-bottom: 15px;
+}
+
+/* PROGRAMS */
+.program-section {
+  width: 90%;
+  max-width: 1300px;
+  margin: 80px auto;
+}
+
+.program-section h2 {
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 40px;
+}
+
+.program-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 30px;
+}
+
+.program-card {
+  background: white;
+  overflow: hidden;
+  border-radius: 40px;
+  box-shadow: 0 12px 35px rgba(0,0,0,.08);
+}
+
+.program-card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+.program-content {
+  padding: 25px;
+}
+
+.program-content span {
+  color: #e63946;
+  font-weight: 600;
+}
+
+.program-content h3 {
+  margin: 12px 0;
+  font-size: 26px;
+}
+
+.program-content p {
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.program-content button {
+  border: none;
+  background: #e63946;
+  color: white;
+
+  padding: 14px 28px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+/* CTA */
+.education-cta {
+  width: 90%;
+  max-width: 1200px;
+
+  margin: 80px auto;
+  padding: 70px 30px;
+
+  text-align: center;
+  color: white;
+
+  border-radius: 60px;
+
+  background: linear-gradient(
+    135deg,
+    #e63946,
+    #ff6b6b
+  );
+}
+
+.education-cta h2 {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+.education-cta p {
+  margin-bottom: 25px;
+  font-size: 18px;
+}
+
+.education-cta button {
+  background: white;
+  color: #e63946;
+  border: none;
+
+  padding: 14px 30px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media (max-width: 992px) {
+
+  .mission-grid,
+  .program-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .education-overlay h1 {
+    font-size: 38px;
+  }
+}
