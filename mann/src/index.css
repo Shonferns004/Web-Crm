@@ -326,3 +326,22 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
 @media (prefers-reduced-motion: reduce) {
   .ripple-core, .ripple-ring { animation-duration: 0.01s; }
 }
+
+/* =============================================
+   Pinned slides (home deck) – ScrollTrigger
+   Panels pin; tall content fake-scrolls up first,
+   then the panel shrinks & fades as the next one
+   arrives. Last panel stays in normal flow.
+   ============================================= */
+.pinned-section {
+  position: relative;
+  overflow: hidden;
+}
+.pinned-inner {
+  overflow: hidden;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pinned-section { overflow: visible; }
+  .pinned-inner { overflow: visible; }
+}
