@@ -18,7 +18,7 @@ export default function LegalCertificate() {
         title="Certificates"
       />
 
-      <section className="py-14 md:py-14 px-6 lg:px-8 bg-surface">
+      <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface">
         <div className="max-w-[900px] mx-auto text-center">
           <SectionHead
             tag="Legal & Compliance Documents"
@@ -33,13 +33,13 @@ export default function LegalCertificate() {
                 href={c.href}
                 target="_blank"
                 rel="noreferrer"
-                className="brutal-border-heavy p-6 bg-white brutal-shadow hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all block text-center"
+                className="bg-white rounded-2xl border border-primary/5 shadow-[0_10px_30px_-5px_rgba(138,0,72,0.08)] p-8 hover:-translate-y-2 hover:shadow-[0_20px_40px_-10px_rgba(138,0,72,0.14)] transition-all block text-center group"
               >
-                <Icon name={c.icon} className="text-7xl text-primary block mb-5" />
-                <h3 className="font-display-lg text-2xl uppercase text-primary tracking-tight mb-4">
+                <Icon name={c.icon} className="text-7xl text-primary block mb-5 mx-auto" />
+                <h3 className="font-display-lg font-bold text-2xl uppercase text-on-surface tracking-tight mb-4">
                   {c.title}
                 </h3>
-                <span className="font-label-bold text-sm uppercase tracking-[0.15em] text-primary flex items-center justify-center gap-2">
+                <span className="font-label-bold text-sm uppercase tracking-[0.15em] text-primary flex items-center justify-center gap-2 group-hover:gap-3 transition-all">
                   View Document
                   <Icon name="arrow_forward" />
                 </span>

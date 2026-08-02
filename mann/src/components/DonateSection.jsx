@@ -28,7 +28,7 @@ function loadRazorpayScript() {
 }
 
 const inputCls =
-  "w-full brutal-border p-5 text-lg bg-white focus:bg-primary-fixed outline-none transition-colors border-primary placeholder:text-primary/40";
+  "w-full rounded-2xl border border-primary/10 bg-surface-container-low p-5 text-lg text-on-surface outline-none transition-colors focus:bg-white focus:ring-2 focus:ring-primary/30 placeholder:text-on-surface-variant/50";
 
 export default function DonateSection() {
   const navigate = useNavigate();
@@ -98,16 +98,16 @@ export default function DonateSection() {
   };
 
   return (
-    <section className="py-14 md:py-14 px-6 lg:px-8 bg-surface" id="donate">
+    <section className="py-section-padding-mobile md:py-section-padding-desktop px-6 lg:px-8 bg-surface" id="donate">
       <div className="max-w-[1100px] mx-auto">
-        <div className="grid lg:grid-cols-2 brutal-border-heavy brutal-shadow overflow-hidden bg-white">
+        <div className="grid lg:grid-cols-2 rounded-[2.5rem] overflow-hidden bg-white shadow-[0_30px_60px_-15px_rgba(138,0,72,0.2)]">
           {/* Left */}
-          <div className="bg-primary text-white p-6 md:p-16 flex flex-col justify-between">
+          <div className="bg-primary text-white p-8 md:p-16 flex flex-col justify-between">
             <div>
-              <span className="inline-block px-3 py-1 bg-white text-primary font-label-bold text-xs uppercase tracking-[0.2em] mb-5">
+              <span className="inline-block px-4 py-1.5 bg-white/15 text-white font-label-bold text-xs uppercase tracking-[0.2em] rounded-full mb-6">
                 Make a Difference
               </span>
-              <h2 className="font-display-lg text-5xl md:text-6xl leading-[0.9] tracking-tighter uppercase mb-5">
+              <h2 className="font-display-lg font-extrabold text-4xl md:text-6xl leading-[0.9] tracking-tighter uppercase mb-6">
                 Join Hands With MANN CARE FOUNDATION
               </h2>
               <p className="text-xl text-white/90 mb-6">
@@ -129,8 +129,8 @@ export default function DonateSection() {
           </div>
 
           {/* Right */}
-          <div className="bg-white p-6 md:p-16">
-            <h3 className="font-display-lg text-4xl uppercase text-primary tracking-tight mb-5">
+          <div className="bg-white p-8 md:p-16">
+            <h3 className="font-display-lg font-extrabold text-3xl md:text-4xl uppercase text-on-surface tracking-tight mb-6">
               Choose Your Contribution
             </h3>
 
@@ -140,10 +140,10 @@ export default function DonateSection() {
                   key={a}
                   type="button"
                   onClick={() => { setSelected(a); setCustom(""); }}
-                  className={`brutal-border py-4 font-bold transition ${
+                  className={`rounded-xl py-4 font-bold transition ${
                     selected === a && !custom
-                      ? "bg-primary text-white"
-                      : "bg-white text-primary hover:bg-primary-fixed"
+                      ? "bg-primary text-white shadow-[0_10px_20px_-5px_rgba(138,0,72,0.4)]"
+                      : "bg-surface-container-low text-primary hover:bg-primary-fixed"
                   }`}
                 >
                   ₹{Number(a).toLocaleString("en-IN")}
@@ -212,7 +212,7 @@ export default function DonateSection() {
               type="button"
               onClick={handleDonate}
               disabled={loading}
-              className="w-full bg-primary text-white py-6 font-label-bold text-xl uppercase tracking-widest brutal-shadow-sm hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all disabled:opacity-60"
+              className="w-full rounded-2xl bg-primary text-white py-6 font-label-bold text-xl uppercase tracking-widest transition-all hover:bg-primary-container hover:scale-[1.01] disabled:opacity-60 shadow-[0_10px_30px_-5px_rgba(138,0,72,0.4)]"
             >
               {loading ? (
                 <span className="inline-flex items-center gap-3">
@@ -226,7 +226,7 @@ export default function DonateSection() {
                 </span>
               )}
             </button>
-            <p className="text-center text-sm text-primary opacity-70 mt-4">
+            <p className="text-center text-sm text-on-surface-variant mt-4">
               Secured payment. Your trust is our priority.
             </p>
           </div>
